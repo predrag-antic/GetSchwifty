@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient.Cypher;
 using Neo4jClient;
+using Newtonsoft.Json.Linq;
 
 namespace GetSchwifty.Controllers
 {
@@ -103,7 +104,7 @@ namespace GetSchwifty.Controllers
             return user;
         }
 
-        // GET: api/User/LoginUser
+        // POST: api/User/LoginUser
         [HttpPost("LoginUser", Name = "LoginUser")]
         public User LoginUser([FromBody] User _user)
         {
@@ -168,10 +169,52 @@ namespace GetSchwifty.Controllers
         }
 
 
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST: api/User/FollowUser/5
+        [HttpPost("FollowUser", Name = "FollowUser")]
+        public FollowedUser FollowUser([FromBody]UserIds userIds)
         {
+            string userId = userIds.userId;
+            string followedUserId = userIds.followedUserId;
+            GraphClientConnection graphClient = new GraphClientConnection();
+            FollowedUser followedUser = new FollowedUser();
+
+            if (graphClient == null)
+            {
+                StatusCode(500);
+                return null;
+            }
+
+            string matchQuery = "(user:User{id:'" + userId + "'})-[follow:FOLLOW]->(followedUser:User{id:'" + followedUserId + "'})";
+            var followedUserQuery = graphClient.client.Cypher
+                .Match(matchQuery)
+                .Return((followedUser) => new {
+                    FollowedUser = followedUser.As<FollowedUser>(),
+                })
+                .Results;
+
+            if (followedUserQuery.Count() == 1) // relation between nodes exist already, so, you need to delete that relation
+            {
+                graphClient.client.Cypher
+                     .Match(matchQuery)
+                    .Delete("follow")
+    .               ExecuteWithoutResults();
+                //204 
+                return null;
+            }
+
+            var newFollowerQuery = graphClient.client.Cypher
+               .Match("(user:User{id:'" + userId + "'}),(followedUser:User{id:'" + followedUserId + "'})")
+               .Create("(user)-[:FOLLOW]->(followedUser)")
+               .Return((followedUser) => new {
+                   FollowedUser = followedUser.As<FollowedUser>(),
+               })
+               .Results;
+
+            followedUser.id = newFollowerQuery.ToList()[0].FollowedUser.id;
+            followedUser.name = newFollowerQuery.ToList()[0].FollowedUser.name;
+            followedUser.age = newFollowerQuery.ToList()[0].FollowedUser.age;
+            followedUser.gender = newFollowerQuery.ToList()[0].FollowedUser.gender;
+            return followedUser;
         }
 
         // DELETE: api/ApiWithActions/5
