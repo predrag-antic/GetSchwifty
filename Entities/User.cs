@@ -7,14 +7,15 @@ namespace GetSchwifty.Entities
 {
     public class User
     {
-        private string id { get; set; }
-        private string name { get; set; }
-        private int age { get; set; }
-        private string gender { get; set; }
-        private List<Band> favoriteBands { get; set; }
-        private List<Place> favoritePlaces { get; set; }
-        private List<Review> reviewPlaces { get; set; }
-        private List<Review> reviewBand { get; set; }
-        private List<User> followedUsers { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string password { get; set; }
+        public int age { get; set; }
+        public string gender { get; set; }
+        public List<FavoriteBand> favoriteBands { get; set; }
+        public List<FavoritePlace> favoritePlaces { get; set; }
+        public List<Review> reviewPlaces { get; set; }
+        public List<Review> reviewBand { get; set; }
+        public List<FollowedUser> followedUsers { get; set; }
     }
 }

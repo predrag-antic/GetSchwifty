@@ -7,8 +7,10 @@ namespace GetSchwifty.Entities
 {
     public class Review
     {
-        private string rating { get; set; }
-        private string comment { get; set; }
+        public string comment { get; set; }
+        public int rating { get; set; }
+
+        public string namee { get; set; }
 
     }
 }

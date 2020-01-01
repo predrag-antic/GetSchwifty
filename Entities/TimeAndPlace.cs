@@ -7,7 +7,7 @@ namespace GetSchwifty.Entities
 {
     public class TimeAndPlace
     {
-        private string placeName { get; set; }
-        private string playTime { get; set; }
+        public string placeName { get; set; }
+        public string playTime { get; set; }
     }
 }
