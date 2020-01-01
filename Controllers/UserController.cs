@@ -99,19 +99,48 @@ namespace GetSchwifty.Controllers
             user.reviewBand = bandsReviewQuery.ToList()[0].BandsReviews.ToList();
             user.reviewPlaces = placesReviewQuery.ToList()[0].PlacesReviews.ToList();
             user.followedUsers = followedUsersQuery.ToList()[0].FollowedUsers.ToList();
-
+            StatusCode(200);
             return user;
         }
 
-        //// GET: api/User/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET: api/User/LoginUser
+        [HttpPost("LoginUser", Name = "LoginUser")]
+        public User LoginUser([FromBody] User _user)
+        {
+            GraphClientConnection graphClient = new GraphClientConnection();
 
-        // POST: api/User
-        [HttpPost("RegisterUser", Name = "RegisterUser")]
+            if (graphClient == null)
+            {
+                StatusCode(500);
+                return null;
+            }
+
+            if (_user.name == null || _user.password==null)
+            {
+                //204
+                return null;
+            }
+
+            User user = new User();
+
+            var userQuery = graphClient.client.Cypher
+                .Match("(user:User{name:'" + _user.name + "', password:'" + _user.password + "'})")
+                .Return((user) => new {
+                    User = user.As<User>(),
+                })
+                .Results;
+
+            if (userQuery.Count() == 0)
+            {
+                //204 No Content, user doesnt exist
+                return null;
+            }
+            StatusCode(200);
+            return Get(userQuery.ToList()[0].User.id);
+        }
+
+        // POST: api/User/RegisterUser
+        [HttpPost("RegisterUser")]
         public ActionResult Post([FromBody] User _user)
         {
             GraphClientConnection graphClient = new GraphClientConnection();
