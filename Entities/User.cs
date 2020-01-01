@@ -11,7 +11,9 @@ namespace GetSchwifty.Entities
         public string name { get; set; }
         public string password { get; set; }
         public int age { get; set; }
+        public bool isOwner { get; set; }
         public string gender { get; set; }
+        public List<string> myPlaces { get; set; }
         public List<FavoriteBand> favoriteBands { get; set; }
         public List<FavoritePlace> favoritePlaces { get; set; }
         public List<Review> reviewPlaces { get; set; }

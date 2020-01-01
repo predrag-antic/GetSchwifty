@@ -18,7 +18,7 @@ namespace GetSchwifty.Controllers
         /// <summary>
         /// .OptionalMatch() - If it cant find described path, return null
         /// .CollectAs<FavoriteBand>() - return collection of FavoriteBand
-        /// .With("bandsReviews {namee:band.name,comment:bandsReviews.comment,rating:bandsReviews.rating}") -bandsReviews is object {name:"",comment:"",rating:""}
+        /// .With("bandsReviews {nameOfBandOrPlace:band.name,comment:bandsReviews.comment,rating:bandsReviews.rating}") -bandsReviews is object {name:"",comment:"",rating:""}
         /// 
         /// </summary>
         /// <param name="userId"></param>
@@ -42,6 +42,14 @@ namespace GetSchwifty.Controllers
                 return null; 
             }
 
+            var myPlacesQuery = graphClient.client.Cypher
+                 .OptionalMatch("(:User{ id:'" + userId + "'})-[:CREATED]->(place:Place)")
+                 .With("place.name as placeName")
+                 .Return((placeName) => new {
+                     MyPlaces = placeName.CollectAs<string>()
+                 })
+                 .Results;
+
             var favBandsQuery = graphClient.client.Cypher
                  .OptionalMatch("(:User{ id:'" + userId + "'})-[:LIKE]->(bands:Band)")
                  .Return((bands) => new {
@@ -58,7 +66,7 @@ namespace GetSchwifty.Controllers
 
             var bandsReviewQuery = graphClient.client.Cypher
                .OptionalMatch("(:User{ id:'" + userId + "'})-[:LEAVE]->(bandsReviews:Review)<-[:HAS_REVIEW]-(band:Band)")
-               .With("bandsReviews {namee:band.name,comment:bandsReviews.comment,rating:bandsReviews.rating}")
+               .With("bandsReviews {nameOfBandOrPlace:band.name,comment:bandsReviews.comment,rating:bandsReviews.rating}")
                 .Return((bandsReviews) => new {
                     BandsReviews = bandsReviews.CollectAs<Review>()
                 })
@@ -66,7 +74,7 @@ namespace GetSchwifty.Controllers
 
             var placesReviewQuery = graphClient.client.Cypher
                .OptionalMatch("(:User{ id:'" + userId + "'})-[:LEAVE]->(placesReviews:Review)<-[:HAS_REVIEW]-(place:Place)")
-               .With("placesReviews {namee:place.name,comment:placesReviews.comment,rating:placesReviews.rating}")
+               .With("placesReviews {nameOfBandOrPlace:place.name,comment:placesReviews.comment,rating:placesReviews.rating}")
                .Return((placesReviews) =>new
                 {
                    PlacesReviews = placesReviews.CollectAs<Review>()
@@ -83,7 +91,9 @@ namespace GetSchwifty.Controllers
             user.id = userQuery.ToList()[0].User.id;
             user.name = userQuery.ToList()[0].User.name;
             user.age = userQuery.ToList()[0].User.age;
+            user.isOwner = userQuery.ToList()[0].User.isOwner;
             user.gender = userQuery.ToList()[0].User.gender;
+            user.myPlaces = myPlacesQuery.ToList()[0].MyPlaces.ToList();
             user.favoriteBands = favBandsQuery.ToList()[0].FavBands.ToList();
             user.favoritePlaces= favPlacesQuery.ToList()[0].FavPlaces.ToList();
             user.reviewBand = bandsReviewQuery.ToList()[0].BandsReviews.ToList();

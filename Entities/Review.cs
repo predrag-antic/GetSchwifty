@@ -9,8 +9,7 @@ namespace GetSchwifty.Entities
     {
         public string comment { get; set; }
         public int rating { get; set; }
-
-        public string namee { get; set; }
+        public string nameOfBandOrPlace { get; set; }
 
     }
 }
