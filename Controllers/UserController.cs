@@ -111,10 +111,33 @@ namespace GetSchwifty.Controllers
         //}
 
         // POST: api/User
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("RegisterUser", Name = "RegisterUser")]
+        public ActionResult Post([FromBody] User _user)
         {
+            GraphClientConnection graphClient = new GraphClientConnection();
+
+            if (graphClient == null) 
+            {
+                StatusCode(500);
+                return null; 
+            }
+
+            if (_user == null)
+            {
+                StatusCode(400);
+                return null;
+            }
+
+            var newUser = new User { id = _user.id, name = _user.name, password=_user.password, age=_user.age, isOwner=_user.isOwner, gender=_user.gender};
+
+            graphClient.client.Cypher
+                .Create("(user:User {newUser})")
+                .WithParam("newUser", newUser)
+                .ExecuteWithoutResults();
+             
+            return StatusCode(200);
         }
+
 
         // PUT: api/User/5
         [HttpPut("{id}")]
