@@ -10,8 +10,9 @@ namespace GetSchwifty.Entities
         public string name { get; set; }
         public string type { get; set; }  //rock, pop, metal, jazz..
         public string imageUrl { get; set; }
+        public string phone { get; set; }
         public float bandAvgRating { get; set; }
-        public List<TimeAndPlace> timesAndPlaces { get; set; }
+        public int numOfRatings { get; set; }
         public List<Review> bandReviews { get; set; }
     }
 }
