@@ -169,7 +169,7 @@ namespace GetSchwifty.Controllers
         }
 
 
-        // POST: api/User/FollowUser/5
+        // POST: api/User/FollowUser
         [HttpPost("FollowUser", Name = "FollowUser")]
         public FollowedUser FollowUser([FromBody]UserIds userIds)
         {
@@ -217,10 +217,98 @@ namespace GetSchwifty.Controllers
             return followedUser;
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // POST: api/User/AddFavoriteBand
+        [HttpPost("AddFavoriteBand", Name = "AddFavoriteBand")]
+        public FavoriteBand AddFavoriteBand([FromBody]UserIdName userIdName)
         {
+            string userId = userIdName.userId;
+            string bandName = userIdName.name;
+            GraphClientConnection graphClient = new GraphClientConnection();
+            FavoriteBand favoriteBand = new FavoriteBand();
+
+            if (graphClient == null)
+            {
+                StatusCode(500);
+                return null;
+            }
+
+            string matchQuery = "(user:User{id:'" + userId + "'})-[like:LIKE]->(favoriteBand:Band{name:'" + bandName + "'})";
+            var favoriteBandQuery = graphClient.client.Cypher
+                .Match(matchQuery)
+                .Return((favoriteBand) => new {
+                    FavoriteBand = favoriteBand.As<FavoriteBand>()
+                })
+                .Results;
+
+            if (favoriteBandQuery.Count() == 1) // relation between nodes exist already, so, you need to delete that relation
+            {
+                graphClient.client.Cypher
+                    .Match(matchQuery)
+                    .Delete("like")
+                    .ExecuteWithoutResults();
+                //204 
+                return null;
+            }
+
+            var newFavoriteBandQuery = graphClient.client.Cypher
+               .Match("(user:User{id:'" + userId + "'}),(favoriteBand:Band{name:'" + bandName + "'})")
+               .Create("(user)-[:LIKE]->(favoriteBand)")
+               .Return((favoriteBand) => new {
+                   FavoriteBand = favoriteBand.As<FavoriteBand>()
+               })
+               .Results;
+
+            favoriteBand.name = newFavoriteBandQuery.ToList()[0].FavoriteBand.name;
+            favoriteBand.type = newFavoriteBandQuery.ToList()[0].FavoriteBand.type;
+            favoriteBand.imageUrl = newFavoriteBandQuery.ToList()[0].FavoriteBand.imageUrl;
+            return favoriteBand;
+        }
+
+        // POST: api/User/AddFavoritePlace
+        [HttpPost("AddFavoritePlace", Name = "AddFavoritePlace")]
+        public FavoritePlace AddFavoritePlace([FromBody]UserIdName userIdName)
+        {
+            string userId = userIdName.userId;
+            string placeName = userIdName.name;
+            GraphClientConnection graphClient = new GraphClientConnection();
+            FavoritePlace favoritePlace = new FavoritePlace();
+
+            if (graphClient == null)
+            {
+                StatusCode(500);
+                return null;
+            }
+
+            string matchQuery = "(user:User{id:'" + userId + "'})-[like:LIKE]->(favoritePlace:Place{name:'" + placeName + "'})";
+            var favoritePlaceQuery = graphClient.client.Cypher
+                .Match(matchQuery)
+                .Return((favoritePlace) => new {
+                    FavoritePlace = favoritePlace.As<FavoritePlace>()
+                })
+                .Results;
+
+            if (favoritePlaceQuery.Count() == 1) // relation between nodes exist already, so, you need to delete that relation
+            {
+                graphClient.client.Cypher
+                    .Match(matchQuery)
+                    .Delete("like")
+                    .ExecuteWithoutResults();
+                //204 
+                return null;
+            }
+
+            var newFavoritePlaceQuery = graphClient.client.Cypher
+               .Match("(user:User{id:'" + userId + "'}),(favoritePlace:Place{name:'" + placeName + "'})")
+               .Create("(user)-[:LIKE]->(favoritePlace)")
+               .Return((favoritePlace) => new {
+                   FavoritePlace = favoritePlace.As<FavoritePlace>()
+               })
+               .Results;
+
+            favoritePlace.name = newFavoritePlaceQuery.ToList()[0].FavoritePlace.name;
+            favoritePlace.address = newFavoritePlaceQuery.ToList()[0].FavoritePlace.address;
+            favoritePlace.imageUrl = newFavoritePlaceQuery.ToList()[0].FavoritePlace.imageUrl;
+            return favoritePlace;
         }
     }
 }
