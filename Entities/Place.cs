@@ -7,10 +7,14 @@ namespace GetSchwifty.Entities
 {
     public class Place
     {
+        public string ownerId { get; set; }
         public string name { get; set; }
+        public string phone { get; set; }
         public string address { get; set; }
-        public float averageRate { get; set; }
-        public List<Band> localBands { get; set; }
-        public List<Review> localReviews { get; set; }
+        public string imageUrl { get; set; }
+        public double averageRate { get; set;}
+        public List<TimeAndBand> placeBands { get; set; }
+        public List<Review> placeReviews { get; set; }
+
     }
 }
