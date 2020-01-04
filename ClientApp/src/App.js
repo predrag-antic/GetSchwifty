@@ -1,22 +1,52 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-
+import { Switch } from 'react-router-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+import routes from './routes'
 import './custom.css'
+import { NavMenu } from './components/navbar/NavMenu';
+import rootReducer from './store/reducers/root.reducer';
+import { rootSaga } from './store/sagas/root.saga';
+
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
+
+sagaMiddleware.run(rootSaga);
 
 export default class App extends Component {
   static displayName = App.name;
 
+  getRoutes = (routes) =>{
+    return routes.map((prop, key) => {
+        return (
+          <Route path={prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+    });
+  }
+
   render () {
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
+      <Provider store={store}>
+        <div>
+          <NavMenu></NavMenu>
+          <Switch>
+            {
+            this.getRoutes(routes)
+            }
+          </Switch>
+        </div>
+      </Provider>
     );
   }
 }
