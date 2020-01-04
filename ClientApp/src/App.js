@@ -10,13 +10,15 @@ import './custom.css'
 import { NavMenu } from './components/navbar/NavMenu';
 import rootReducer from './store/reducers/root.reducer';
 import { rootSaga } from './store/sagas/root.saga';
-
+import thunkMiddleware from 'redux-thunk'
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+const middleWares = [sagaMiddleware, thunkMiddleware]
+
+export const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
+  composeWithDevTools(applyMiddleware(...middleWares))
 );
 
 sagaMiddleware.run(rootSaga);
