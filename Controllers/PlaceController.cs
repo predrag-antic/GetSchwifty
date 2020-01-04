@@ -114,7 +114,7 @@ namespace GetSchwifty.Controllers
             return placeInfo;
         }
 
-        // POST: api/Place
+        // POST: api/Place/create
         [HttpPost("create")]
         public Place Post([FromBody] Place _place)
         {
@@ -158,6 +158,57 @@ namespace GetSchwifty.Controllers
             newPlace = newPlaceQueryResult.ToList()[0].Place;
             StatusCode(200);
             return newPlace;
+        }
+
+        [HttpPost("addBand", Name = "addBand")]
+        public ObjectResult addBand([FromBody]TimeAndBand _bandTimeAndPlace)
+        {
+            GraphClientConnection graphClient = new GraphClientConnection();
+            if (graphClient == null)
+            {  
+                return StatusCode(500, "{message:\"Something went wrong with db\"}");
+            }
+            var bandQuery = graphClient.client.Cypher
+                .Match("(band:Band{name: '" + _bandTimeAndPlace.bandName + "'})")
+                .Return((band) => new
+                {
+                    Band = band.As<Band>()
+                })
+                .Results;
+            if(bandQuery.Count() == 0)
+            {
+                return StatusCode(404, "{message:\"Band doesn't exist\"}");
+            }
+
+            var placeQuery = graphClient.client.Cypher
+                .Match("(place:Place{name: '" + _bandTimeAndPlace.placeName + "'})")
+                .Return((place) => new
+                {
+                    Place = place.As<Place>()
+                })
+                .Results;
+            if(placeQuery.Count() == 0)
+            {
+                return StatusCode(404, "{message:\"Place doesn't exist\"}");
+            }
+
+            var timePlaceBand = graphClient.client.Cypher
+                .Match("(band:Band{name: '" + _bandTimeAndPlace.bandName + "'}), (place:Place{name: '" + _bandTimeAndPlace.placeName + "'})")
+                .Create("(band)-[play:PLAY{time:'" + _bandTimeAndPlace.time + "', day:'" + _bandTimeAndPlace.day + "',type:'" +
+                _bandTimeAndPlace.type + "'}]->(place)")
+                .With("{placeName: place.name, bandName: band.name, day: play.day, time: play.time, type: play.type} as timePlaceAndBand ")
+                .Return((timePlaceAndBand) => new
+                {
+                    TimePlaceAndBand = timePlaceAndBand.As<TimeAndBand>()
+                })
+                .Results;
+
+            if(timePlaceBand.Count() == 0)
+            {
+                return StatusCode(500, "{message:\"Something went wrong\"}");
+            }
+            TimeAndBand tmp = timePlaceBand.ToList()[0].TimePlaceAndBand;
+            return StatusCode(201, tmp);
         }
 
         // PUT: api/Place/5
