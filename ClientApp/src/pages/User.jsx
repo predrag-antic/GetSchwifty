@@ -31,10 +31,10 @@ class User extends Component {
             user_info.followedUsers.length!==0?
             user_info.followedUsers.map((followedUser)=>{
               return (
-                <div class="rounded border border-primary media ml-3" style={{"width":"150px"}}>
+                <div key={followedUser.id} className="rounded border border-primary media ml-3" style={{"width":"150px"}}>
                   <img src={followedUser.gender==="male"?malegender:femalegender} 
                   className="mr-3" alt="..." width="30" height="30"/>
-                  <div class="">
+                  <div className="">
                     <Link to={`/user/${followedUser.id}`}><small className="mt-0">{followedUser.name}</small></Link>
                   </div>
                 </div>
@@ -51,10 +51,10 @@ class User extends Component {
               user_info.reviewBand.length!==0?
               user_info.reviewBand.map((band)=>{
                 return (
-                <div class="card" style={{"width": "18rem"}}>
-                    <div class="card-body">
-                      <h5 class="card-title">{band.nameOfBandOrPlace} Rating:{band.rating}</h5>
-                      <p class="card-text">{band.comment}</p>
+                <div key={band.nameOfBandOrPlace} className="card" style={{"width": "18rem"}}>
+                    <div className="card-body">
+                      <h5 className="card-title">{band.nameOfBandOrPlace} Rating:{band.rating}</h5>
+                      <p className="card-text">{band.comment}</p>
                     </div>
                 </div>
                 )
@@ -70,10 +70,10 @@ class User extends Component {
               user_info.reviewPlaces.length!==0?
               user_info.reviewPlaces.map((place)=>{
                 return (
-                <div class="card" style={{"width": "18rem"}}>
-                    <div class="card-body">
-                      <h5 class="card-title">{place.nameOfBandOrPlace} Rating:{place.rating}</h5>
-                      <p class="card-text">{place.comment}</p>
+                <div key={place.nameOfBandOrPlace} className="card" style={{"width": "18rem"}}>
+                    <div className="card-body">
+                      <h5 className="card-title">{place.nameOfBandOrPlace} Rating:{place.rating}</h5>
+                      <p className="card-text">{place.comment}</p>
                     </div>
                 </div>
                 )

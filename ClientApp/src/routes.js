@@ -1,4 +1,6 @@
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
+import Places from "./pages/Places";
+import Bands from "./pages/Bands";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import User from "./pages/User";
@@ -10,13 +12,23 @@ var routes = [
         component:User
     },
     {
+        path: "/places",
+        name: "Places",
+        component: Places,
+    },
+    {
+        path: "/bands",
+        name: "Bands",
+        component: Bands,
+    },
+    {
         path:"/register",
-        name:Register,
+        name:"Register",
         component:Register
     },
     {
         path:"/login",
-        name:Login,
+        name:"Login",
         component:Login
     },
     {

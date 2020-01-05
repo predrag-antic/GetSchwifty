@@ -9,6 +9,9 @@ import './custom.css'
 import { NavMenu } from './components/navbar/NavMenu';
 import rootReducer from './store/reducers/root.reducer';
 import { rootSaga } from './store/sagas/root.saga';
+import { requestPlaces } from './store/actions/place.actions';
+import { requestBands } from './store/actions/band.actions';
+
 import thunkMiddleware from 'redux-thunk'
 import { Router, Route } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -46,6 +49,10 @@ export default class App extends Component {
     if(localStorage.getItem("id")){
       store.dispatch(thunk_action_getUserByIdAuth(localStorage.getItem("id")))
     }
+
+    store.dispatch(requestPlaces());
+    store.dispatch(requestBands());
+    
     return (
       <Provider store={store}>
         <Router history={history}>
