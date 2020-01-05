@@ -13,12 +13,15 @@ import { rootSaga } from './store/sagas/root.saga';
 import { requestPlaces } from './store/actions/place.actions';
 import { requestBands } from './store/actions/band.actions';
 
+import thunkMiddleware from 'redux-thunk'
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+const middleWares = [sagaMiddleware, thunkMiddleware]
+
+export const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
+  composeWithDevTools(applyMiddleware(...middleWares))
 );
 
 sagaMiddleware.run(rootSaga);

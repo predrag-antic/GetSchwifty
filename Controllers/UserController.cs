@@ -44,7 +44,7 @@ namespace GetSchwifty.Controllers
             }
 
             var myPlacesQuery = graphClient.client.Cypher
-                 .OptionalMatch("(:User{ id:'" + userId + "'})-[:CREATED]->(place:Place)")
+                 .OptionalMatch("(:User{ id:'" + userId + "'})-[:CREATE]->(place:Place)")
                  .With("place.name as placeName")
                  .Return((placeName) => new {
                      MyPlaces = placeName.CollectAs<string>()
