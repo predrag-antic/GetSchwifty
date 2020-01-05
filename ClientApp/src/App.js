@@ -10,6 +10,8 @@ import './custom.css'
 import { NavMenu } from './components/navbar/NavMenu';
 import rootReducer from './store/reducers/root.reducer';
 import { rootSaga } from './store/sagas/root.saga';
+import { requestPlaces } from './store/actions/place.actions';
+import { requestBands } from './store/actions/band.actions';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -36,6 +38,10 @@ export default class App extends Component {
   }
 
   render () {
+
+    store.dispatch(requestPlaces());
+    store.dispatch(requestBands());
+    
     return (
       <Provider store={store}>
         <div>
