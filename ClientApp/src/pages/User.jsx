@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {thunk_action_followUser} from '../store/actions/user-actions'
+import {thunk_action_getUserById} from '../store/actions/user-actions'
 import {store} from '../App'
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux'
@@ -11,10 +11,19 @@ import femalegender from '../resources/male-gender.jpg'
 
 class User extends Component {    
 
+    componentDidMount(){
+      const userId = this.props.match.params.id;
+    store.dispatch(thunk_action_getUserById(userId));
+    } 
+
     constructor(props){
         super(props);
         this.state={
          }
+    }
+
+    handleClick=(userId)=>{
+      store.dispatch(thunk_action_getUserById(userId));
     }
 
   render () {
@@ -35,7 +44,9 @@ class User extends Component {
                   <img src={followedUser.gender==="male"?malegender:femalegender} 
                   className="mr-3" alt="..." width="30" height="30"/>
                   <div className="">
-                    <Link to={`/user/${followedUser.id}`}><small className="mt-0">{followedUser.name}</small></Link>
+                    <div className="btn" onClick={()=>this.handleClick(followedUser.id)}>
+                    <Link  to={`/user/${followedUser.id}`}><small className="mt-0">{followedUser.name}</small></Link>
+                    </div>
                   </div>
                 </div>
               )

@@ -14,7 +14,10 @@ class Register extends Component {
             password:"",
             gender:"",
             isOwner:false,
-            age:18
+            age:18,
+            userNameError:false,
+            passwordError:false,
+            genderError:false,
          }
     }
 
@@ -36,28 +39,59 @@ class Register extends Component {
         this.setState({'age':age})
     }
 
+    checkInput=()=>{
+        const {username,password,gender} = this.state;
+        var noError=true;
+
+        if(username.length<=8){
+            this.setState({"userNameError":true})
+            noError=false;
+        }else {
+            this.setState({"userNameError":false})
+        }
+
+        if(password.length<=8){
+            this.setState({"passwordError":true})
+            noError=false;
+        }else {
+            this.setState({"passwordError":false})
+        }
+
+        if(gender.length===0){
+            this.setState({"genderError":true})
+            noError=false;
+        }else {
+            this.setState({"genderError":false})
+        }
+
+        return noError;
+    }
+
     handleSubmit=()=>{
         const {username,password,gender,isOwner,age} = this.state;
-        const userInfo = {
-            id:uuidv1(),
-            name:username,
-            password:password,
-            age:age,
-            gender:gender,
-            isOwner:isOwner
-        }
-        
-        registerNewUser(userInfo).then(response=>{
-            if(response.status===200){
-                Swal.fire('Register success','','success')
-            }else {
-                Swal.fire('Error','Somethnig went wrong! Try again!','error')
+        if(this.checkInput()){
+
+            const userInfo = {
+                id:uuidv1(),
+                name:username,
+                password:password,
+                age:age,
+                gender:gender,
+                isOwner:isOwner
             }
-        })
+            
+            registerNewUser(userInfo).then(response=>{
+                if(response.status===200){
+                    Swal.fire('Register success','','success')
+                }else {
+                    Swal.fire('Error','Somethnig went wrong! Try again!','error')
+                }
+            })
+        }
     }
 
   render () {
-    const {username,password,isOwner,age} = this.state;
+    const {username,password,isOwner,age,userNameError,passwordError,genderError} = this.state;
     return (
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">
@@ -65,6 +99,12 @@ class Register extends Component {
                     <div className="col">
                         <label>Username</label>
                         <input onChange={this.onChange} type="text" name="username" className="form-control" id="validationCustom01" placeholder="Username" value={username} required/>
+                        {
+                            userNameError?
+                            <small  style={{"color":"red"}}>Username must contain at least 8 characters!</small>
+                            :
+                            <small/>
+                        }
                     </div>
                 </div>
                 <div className="form row mt-3">
@@ -72,6 +112,12 @@ class Register extends Component {
                         <label>Password</label>
                         <input onChange={this.onChange} type="password" className="form-control" id="inputPassword" placeholder="Password"
                         value={password} name="password" required/>
+                        {
+                            passwordError?
+                            <small  style={{"color":"red"}}>Password must contain at least 8 characters!</small>
+                            :
+                            <small/>
+                        }
                     </div>
                 </div>
                 <div className="form row mt-3">
@@ -94,6 +140,12 @@ class Register extends Component {
                         <label className="custom-control-label" htmlFor="customRadio2">Female</label>
                     </div>
                 </div>
+                {
+                    genderError?
+                    <small  style={{"color":"red"}}>Please choose a gender!</small>
+                    :
+                    <small/>
+                }
                 <div className="custom-control custom-checkbox mt-3">
                     <input onChange={()=>{this.handleCheckBoxChange(!isOwner)}} type="checkbox" className="custom-control-input" id="customCheck1"
                     value={isOwner} name="isOwner"/>

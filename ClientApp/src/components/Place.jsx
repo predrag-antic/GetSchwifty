@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { getPlace } from '../store/actions/place.actions';
 import Swal from 'sweetalert2'
 import ReviewForm from './ReviewForm';
+import {store} from '../App'
+import {thunk_action_addPlaceToFavorite} from '../store/actions/user-actions'
 
 class Place extends React.Component {
 
@@ -14,6 +16,26 @@ class Place extends React.Component {
     zoomPic = () => {
         Swal.fire({imageUrl:"https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"})
     }
+
+    handleAddToFavorite=(placeName)=>{
+        const userIdPlaceName ={
+          userId:localStorage.getItem("id"),
+          name:placeName
+        }
+        store.dispatch(thunk_action_addPlaceToFavorite(userIdPlaceName));
+      }
+
+    alreadyFavorite=()=>{
+        var isFavorite=false;
+        if(this.props.current_user.favoritePlaces){
+          this.props.current_user.favoritePlaces.map((place)=>{
+            if(place.name===this.props.place.name){
+                isFavorite= true;
+            }
+          })
+        }
+        return isFavorite;
+      }
 
     render(){
         const {place} = this.props;
@@ -41,6 +63,18 @@ class Place extends React.Component {
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {place.averageRate}</h5></div>
 
                                     }
+                                    <div className="d-flex" style={{alignItems:"baseline"}}> 
+                                    {
+                                        this.alreadyFavorite()?
+                                        (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-danger">
+                                            Favorite
+                                        </button>)
+                                        :
+                                        (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-outline-danger">
+                                            Add To Favorite
+                                        </button>)
+                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +118,8 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     return {
-        place: state.place
+        place: state.place,
+        current_user:state.current_user
     }
 }
 
