@@ -74,3 +74,16 @@ export function addFavoritePlaceService(userIdPlaceName) {
         return errorMessage
     });
 }
+
+export function addFavoriteBandService(userIdBandName) {
+    var options = {
+        data: userIdBandName
+    };
+
+    var config = generateAuthRequest(POST, `api/User/AddFavoriteBand` , options, {});
+    return axios(config)
+    .then( response => response)
+    .catch((errorMessage) => {
+        return errorMessage
+    });
+}

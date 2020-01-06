@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2'
 import { getBand } from '../store/actions/band.actions';
+import {store} from '../App'
+import {thunk_action_addBandToFavorite} from '../store/actions/user-actions'
 
 class Band extends React.Component {
 
@@ -13,6 +15,26 @@ class Band extends React.Component {
     zoomPic = () => {
         Swal.fire({imageUrl:"https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"})
     }
+
+    handleAddToFavorite=(bandName)=>{
+        const userIdBandName ={
+          userId:localStorage.getItem("id"),
+          name:bandName
+        }
+        store.dispatch(thunk_action_addBandToFavorite(userIdBandName));
+      }
+
+    alreadyFavorite=()=>{
+        var isFavorite=false;
+        if(this.props.current_user.favoriteBands){
+          this.props.current_user.favoriteBands.map((band)=>{
+            if(band.name===this.props.band.name){
+                isFavorite= true;
+            }
+          })
+        }
+        return isFavorite;
+      }
 
     render(){
         const {band} = this.props;
@@ -40,6 +62,18 @@ class Band extends React.Component {
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {band.bandAvgRating}</h5></div>
 
                                     }
+                                    <div className="d-flex" style={{alignItems:"baseline"}}> 
+                                    {
+                                        this.alreadyFavorite()?
+                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-danger">
+                                            Favorite
+                                        </button>)
+                                        :
+                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-outline-danger">
+                                            Add To Favorite
+                                        </button>)
+                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +112,8 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     return {
-        band: state.band
+        band: state.band,
+        current_user:state.current_user
     }
 }
 

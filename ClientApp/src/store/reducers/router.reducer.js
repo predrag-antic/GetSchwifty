@@ -17,7 +17,6 @@ export function routerReducer(state = initialState, action) {
     if(partOfPath[1]==="user"){
         store.dispatch(thunk_action_getUserById(partOfPath[2]))
     }
-    console.log(store);
     return { ...state, locationBeforeTransitions: action.payload }
   }
 
