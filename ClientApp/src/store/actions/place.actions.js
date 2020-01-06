@@ -1,4 +1,4 @@
-
+import {addFavoritePlaceService} from '../../services/place.service'
 export const GET_PLACES = 'GET_PLACES';
 export const REQUEST_PLACES = "REQUEST_PLACES";
 export const GET_PLACE = "GET_PLACE";

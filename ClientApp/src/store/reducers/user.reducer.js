@@ -1,6 +1,6 @@
 import {Action} from 'redux';
 import { LOGIN_SUCCESS, LOGIN_UNSUCCESS, LOGOUT, GET_USER_SUCCESS_AUTH } from '../actions/auth-actions';
-import { FOLLOW_USER_SUCCESS, UNFOLLOW_USER} from '../actions/user-actions';
+import { FOLLOW_USER_SUCCESS, UNFOLLOW_USER,ADD_FAVORITE_PLACE_SUCCESS,REMOVE_FAVORITE_PLACE} from '../actions/user-actions';
 
 
 const initialState={
@@ -39,6 +39,15 @@ export function userReducer(state=initialState,action){
             var followedUserId=action.followedUserId;
                state.followedUsers=state.followedUsers.filter(followedUser=>followedUser.id!==followedUserId);
                return {...state}
+        case ADD_FAVORITE_PLACE_SUCCESS:
+            var place=action.place;
+            return Object.assign({}, state, {
+                favoritePlaces: [...state.favoritePlaces,place]
+                })
+        case REMOVE_FAVORITE_PLACE:
+            var placeName=action.placeName;
+                state.favoritePlaces=state.favoritePlaces.filter(favPlace=>favPlace.name!==placeName);
+                return {...state}
         default:
             return state;
     }

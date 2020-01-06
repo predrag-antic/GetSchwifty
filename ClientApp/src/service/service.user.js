@@ -61,3 +61,16 @@ export function followUserService(userIds) {
         return errorMessage
     });
 }
+
+export function addFavoritePlaceService(userIdPlaceName) {
+    var options = {
+        data: userIdPlaceName
+    };
+
+    var config = generateAuthRequest(POST, `api/User/AddFavoritePlace` , options, {});
+    return axios(config)
+    .then( response => response)
+    .catch((errorMessage) => {
+        return errorMessage
+    });
+}

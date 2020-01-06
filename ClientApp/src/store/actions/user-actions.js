@@ -1,9 +1,11 @@
 import {store} from "../../App";
-import {getUserByUserIdService, followUserService} from '../../service/service.user'
+import {getUserByUserIdService, followUserService,addFavoritePlaceService} from '../../service/service.user'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_UNSUCCESS = 'GET_USER_UNSUCCESS';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const UNFOLLOW_USER = 'UNFOLLOW_USER';
+export const ADD_FAVORITE_PLACE_SUCCESS = "ADD_FAVORITE_PLACE_SUCCESS";
+export const REMOVE_FAVORITE_PLACE = "REMOVE_FAVORITE_PLACE";
 
 export function getUserByUserId (user) {
     return {
@@ -54,6 +56,32 @@ export const thunk_action_followUser = userIds => {
               dispatch(followUserSuccess(response.data))
           }else {
               dispatch(unfollowUser(userIds.followedUserId))
+          }
+      })
+    }
+  }
+
+  export function addFavoritePlaceSuccess(place){
+    return {
+        type: ADD_FAVORITE_PLACE_SUCCESS,
+        place
+    }
+}
+
+export function removeFavoritePlace(placeName){
+    return {
+        type: REMOVE_FAVORITE_PLACE,
+        placeName
+    }
+}
+
+export const thunk_action_addPlaceToFavorite = userIdPlaceName => {
+    return function(dispatch, getState) {
+      return addFavoritePlaceService(userIdPlaceName).then(response=>{
+          if(response.status===200){
+              dispatch(addFavoritePlaceSuccess(response.data))
+          }else {
+              dispatch(removeFavoritePlace(userIdPlaceName.name))
           }
       })
     }
