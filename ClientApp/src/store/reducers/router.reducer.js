@@ -15,7 +15,7 @@ export function routerReducer(state = initialState, action) {
     const pathname=action.payload.pathname;
     const partOfPath=pathname.split("/");
     if(partOfPath[1]==="user"){
-        store.dispatch(thunk_action_getUserById(partOfPath[2]))
+       store.dispatch(thunk_action_getUserById(partOfPath[2]))
     }
     return { ...state, locationBeforeTransitions: action.payload }
   }
