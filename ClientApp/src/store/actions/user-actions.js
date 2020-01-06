@@ -23,7 +23,6 @@ export const thunk_action_getUserById = userID => {
     return function(dispatch, getState) {
       return getUserByUserIdService(userID).then(response=>{
           if(response.status===200){
-              localStorage.setItem("name", response.data.name);
               dispatch(getUserByUserId(response.data))
           }else {
               dispatch(getUserByUserIdUnsuccess())

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getPlace } from '../store/actions/place.actions';
 import Swal from 'sweetalert2'
+import ReviewForm from './ReviewForm';
 
 class Place extends React.Component {
 
@@ -65,6 +66,11 @@ class Place extends React.Component {
                     :
                     'There is no such place.'
                 }
+                <div className="row">
+                    <div className="col-md-7 my-5">
+                        <ReviewForm name={this.props.match.params.id}></ReviewForm>
+                    </div>
+                </div>
             </div>
         )
     }

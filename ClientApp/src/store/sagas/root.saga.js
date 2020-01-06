@@ -3,6 +3,8 @@ import { REQUEST_PLACES, GET_PLACE } from '../actions/place.actions';
 import { fetchPlaces, fetchPlace } from './place.saga';
 import { REQUEST_BANDS, GET_BAND } from '../actions/band.actions';
 import { fetchBands, fetchBand } from './band.saga';
+import { ADD_REVIEW } from '../actions/review.actions';
+import { postReview } from './review.saga';
 
 export function* rootSaga () {
     yield all (
@@ -10,7 +12,8 @@ export function* rootSaga () {
             takeEvery(REQUEST_PLACES, fetchPlaces),
             takeEvery(REQUEST_BANDS, fetchBands),
             takeEvery(GET_PLACE, fetchPlace),
-            takeEvery(GET_BAND, fetchBand)
+            takeEvery(GET_BAND, fetchBand),
+            takeEvery(ADD_REVIEW, postReview)
         ]
     )
 }

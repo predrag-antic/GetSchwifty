@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2'
 import { getBand } from '../store/actions/band.actions';
+import ReviewForm from './ReviewForm';
 
 class Band extends React.Component {
 
@@ -65,6 +66,11 @@ class Band extends React.Component {
                     :
                     'There is no such band.'
                 }
+                <div className="row">
+                    <div className="col-md-7 my-5">
+                        <ReviewForm name={this.props.match.params.id}></ReviewForm>
+                    </div>
+                </div>
             </div>
         )
     }
