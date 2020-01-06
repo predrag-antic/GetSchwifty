@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
 import { Switch } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -14,6 +13,10 @@ import { requestPlaces } from './store/actions/place.actions';
 import { requestBands } from './store/actions/band.actions';
 
 import thunkMiddleware from 'redux-thunk'
+import { Router, Route } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
+import browserHistory from './history'
+import { thunk_action_getUserByIdAuth } from './store/actions/auth-actions';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -23,6 +26,8 @@ export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(...middleWares))
 );
+
+const history = syncHistoryWithStore(browserHistory, store)
 
 sagaMiddleware.run(rootSaga);
 
@@ -41,12 +46,16 @@ export default class App extends Component {
   }
 
   render () {
+    if(localStorage.getItem("id")){
+      store.dispatch(thunk_action_getUserByIdAuth(localStorage.getItem("id")))
+    }
 
     store.dispatch(requestPlaces());
     store.dispatch(requestBands());
     
     return (
       <Provider store={store}>
+        <Router history={history}>
         <div>
           <NavMenu></NavMenu>
           <Switch>
@@ -55,6 +64,7 @@ export default class App extends Component {
             }
           </Switch>
         </div>
+        </Router>
       </Provider>
     );
   }

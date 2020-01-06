@@ -5,6 +5,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Place from "./components/Place";
 import Band from "./components/Band";
+import User from "./pages/User";
 
 var routes = [
     {
@@ -16,6 +17,11 @@ var routes = [
         path: "/bands/:id",
         name: "Band",
         component: Band
+    },
+    {
+        path:"/user/:id",
+        name:User,
+        component:User
     },
     {
         path: "/places",
