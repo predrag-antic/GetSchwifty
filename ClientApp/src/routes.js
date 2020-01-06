@@ -1,11 +1,22 @@
 import Home from "./pages/Home";
 import Places from "./pages/Places";
 import Bands from "./pages/Bands";
-import { Home } from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import Place from "./components/Place";
+import Band from "./components/Band";
 
 var routes = [
+    {
+        path: "/places/:id",
+        name: "Place",
+        component: Place
+    },
+    {
+        path: "/bands/:id",
+        name: "Band",
+        component: Band
+    },
     {
         path: "/places",
         name: "Places",

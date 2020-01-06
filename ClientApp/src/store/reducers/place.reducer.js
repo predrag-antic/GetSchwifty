@@ -6,7 +6,7 @@ const initialState = {
         phone : '',
         address : '',
         imageUrl  : '',
-        averageRate : 0.0,
+        averageRate : '',
         placeBands : [],
         placeReviews : []
 }

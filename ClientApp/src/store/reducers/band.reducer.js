@@ -7,7 +7,7 @@ const initialState = {
     imageUrl  : '',
     bandAvgRating : 0.0,
     numOfRatings : 0,
-    bandeReviews : []
+    bandReviews : []
 }
 
 export function bandReducer( state = initialState, action ){

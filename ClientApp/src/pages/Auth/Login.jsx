@@ -33,7 +33,7 @@ class Login extends Component {
   render () {
     const {username,password} = this.state;
     return (
-        <div className="container form-width">
+        <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">
                 <div className="form-row">
                     <div className="col">
