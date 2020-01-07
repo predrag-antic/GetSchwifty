@@ -27,6 +27,14 @@ class UserInfo extends Component {
         return isFollower;
       }
 
+      isMyProfile=()=>{
+        var isMyProfile=false;
+        if(this.props.current_user.id===this.props.user_info.id){
+          isMyProfile=true;
+        }
+        return isMyProfile;
+      }
+
     render () {
         const {user_info} =this.props;
         return (
@@ -38,6 +46,7 @@ class UserInfo extends Component {
                     <img src={photo} alt="" className="img-rounded"/>
                     </div>
                     {
+                      !this.isMyProfile()?
                       localStorage.getItem("id")?
                       (<div className="mt-1 text-center">
                       {
@@ -51,6 +60,8 @@ class UserInfo extends Component {
                           </button>
                       }
                       </div>)
+                      :
+                      null
                       :
                       null
                     }
@@ -70,7 +81,7 @@ class UserInfo extends Component {
                     const color='#'+(Math.random()*0xFFFFFF<<0).toString(16);
                     return (
                         <Link key={placeName} className="btn ml-3 mt-1" 
-                        style={{"backgroundColor":`${color}`}} to={`/place/${placeName}`}>
+                        style={{"backgroundColor":`${color}`}} to={`/places/${placeName}`}>
                             <small  style={{"color":`white`}}>{placeName}</small>
                         </Link>
                     )

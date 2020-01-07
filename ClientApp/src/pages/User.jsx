@@ -28,6 +28,7 @@ class User extends Component {
 
   render () {
     const {user_info} =this.props;
+
     return (
       <div className="container">
         <UserInfo/>

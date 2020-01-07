@@ -6,8 +6,14 @@ import Register from "./pages/Auth/Register";
 import Place from "./components/Place";
 import Band from "./components/Band";
 import User from "./pages/User";
+import CreatePlace from "./pages/CreatePlace";
 
 var routes = [
+    {
+        path:"/create-place",
+        name:"CreatePlace",
+        component: CreatePlace
+    },
     {
         path: "/places/:id",
         name: "Place",

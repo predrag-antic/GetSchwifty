@@ -87,3 +87,16 @@ export function addFavoriteBandService(userIdBandName) {
         return errorMessage
     });
 }
+
+export function createNewPlace (place) {
+    var options = {
+        data: place
+    };
+
+    var config = generateAuthRequest(POST, 'api/Place/create' , options, {});
+    return axios(config)
+    .then( response => response)
+    .catch((errorMessage) => {
+        return errorMessage
+    });
+}  

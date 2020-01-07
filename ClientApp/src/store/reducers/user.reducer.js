@@ -1,7 +1,7 @@
 import {Action} from 'redux';
 import { LOGIN_SUCCESS, LOGIN_UNSUCCESS, LOGOUT, GET_USER_SUCCESS_AUTH } from '../actions/auth-actions';
 import { FOLLOW_USER_SUCCESS, UNFOLLOW_USER,ADD_FAVORITE_PLACE_SUCCESS,REMOVE_FAVORITE_PLACE,
-    ADD_FAVORITE_BAND_SUCCESS,REMOVE_FAVORITE_BAND} from '../actions/user-actions';
+    ADD_FAVORITE_BAND_SUCCESS,REMOVE_FAVORITE_BAND,ADD_MY_PLACE} from '../actions/user-actions';
 
 
 const initialState={
@@ -58,6 +58,11 @@ export function userReducer(state=initialState,action){
             var bandName=action.bandName;
                 state.favoriteBands=state.favoriteBands.filter(favBand=>favBand.name!==bandName);
                 return {...state}
+        case ADD_MY_PLACE:
+            var placeName=action.placeName;
+            return Object.assign({}, state, {
+                myPlaces: [...state.myPlaces,placeName]
+                })
         default:
             return state;
     }

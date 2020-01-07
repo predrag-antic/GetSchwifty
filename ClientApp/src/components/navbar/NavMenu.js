@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import {connect} from 'react-redux'
+import {store} from '../../App'
+import {thunk_action_getUserById} from '../../store/actions/user-actions'
 
-export class NavMenu extends Component {
+class NavMenu extends Component {
   static displayName = NavMenu.name;
 
   constructor (props) {
@@ -26,6 +29,10 @@ export class NavMenu extends Component {
     window.location.reload(true);
   }
 
+  handleClick=(userId)=>{
+    store.dispatch(thunk_action_getUserById(userId));
+  }
+
   render () {
     return (
       <header>
@@ -41,6 +48,29 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/bands">Bands</NavLink>
                 </NavItem>
+                {
+                localStorage.getItem("id")?
+                <NavItem>
+                  <div onClick={()=>this.handleClick(this.props.current_user.id)}>
+                    <NavLink tag={Link} className="text-light" to={{pathname:`/user/${this.props.current_user.id}`}}>
+                      Profile
+                    </NavLink>
+                  </div>
+                </NavItem>
+                :
+                null
+                }
+                {
+                  localStorage.getItem("id")?
+                  this.props.current_user.isOwner?
+                  <NavItem>
+                    <NavLink tag={Link} className="text-light" to="/create-place">Create Place</NavLink>
+                  </NavItem>
+                  :
+                  null
+                  :
+                  null
+                }
                 {
                 !localStorage.getItem("id")?
                 <NavItem>
@@ -67,3 +97,12 @@ export class NavMenu extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+      current_user:state.current_user
+  }
+}
+
+
+export default connect(mapStateToProps,null)(NavMenu);

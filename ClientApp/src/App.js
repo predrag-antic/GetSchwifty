@@ -6,7 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import routes from './routes'
 import './custom.css'
-import { NavMenu } from './components/navbar/NavMenu';
+import  NavMenu  from './components/navbar/NavMenu';
 import rootReducer from './store/reducers/root.reducer';
 import { rootSaga } from './store/sagas/root.saga';
 import { requestPlaces } from './store/actions/place.actions';

@@ -12,6 +12,7 @@ export const ADD_FAVORITE_PLACE_SUCCESS = "ADD_FAVORITE_PLACE_SUCCESS";
 export const REMOVE_FAVORITE_PLACE = "REMOVE_FAVORITE_PLACE";
 export const ADD_FAVORITE_BAND_SUCCESS = "ADD_FAVORITE_BAND_SUCCESS";
 export const REMOVE_FAVORITE_BAND = "REMOVE_FAVORITE_BAND";
+export const ADD_MY_PLACE = "ADD_MY_PLACE";
 
 export function getUserByUserId (user) {
     return {
@@ -120,3 +121,12 @@ export const thunk_action_addBandToFavorite = userIdBandName => {
       })
     }
   }
+
+  //////////////////ADD_MY_PLACE////////////////
+
+  export function addPlaceToMyPlaces(placeName){
+    return {
+        type: ADD_MY_PLACE,
+        placeName
+    }
+}
