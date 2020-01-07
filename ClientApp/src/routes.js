@@ -7,8 +7,14 @@ import Place from "./components/Place";
 import Band from "./components/Band";
 import User from "./pages/User";
 import CreatePlace from "./pages/CreatePlace";
+import Play from "./pages/Play";
 
 var routes = [
+    {
+        path:"/play",
+        name:"Play",
+        component: Play
+    },
     {
         path:"/create-place",
         name:"CreatePlace",

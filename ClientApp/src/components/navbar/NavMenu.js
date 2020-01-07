@@ -72,6 +72,17 @@ class NavMenu extends Component {
                   null
                 }
                 {
+                  localStorage.getItem("id")?
+                  this.props.current_user.isOwner?
+                  <NavItem>
+                    <NavLink tag={Link} className="text-light" to="/play">Play</NavLink>
+                  </NavItem>
+                  :
+                  null
+                  :
+                  null
+                }
+                {
                 !localStorage.getItem("id")?
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
