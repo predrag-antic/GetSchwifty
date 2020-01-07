@@ -14,7 +14,7 @@ namespace GetSchwifty.Entities
         public string imageUrl { get; set; }
         public double averageRate { get; set;}
         public List<TimeAndBand> placeBands { get; set; }
-        public List<Review> placeReviews { get; set; }
+        public List<UserReview> placeReviews { get; set; }
 
     }
 }

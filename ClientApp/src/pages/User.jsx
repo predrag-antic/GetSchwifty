@@ -35,63 +35,61 @@ class User extends Component {
         <div className="dropdown-divider"></div>
         <Favorites/>
         <div className="dropdown-divider"></div>
-        <h5>FOLLOWING:</h5>
-        <div className="d-flex">
+        <h3 className="my-4 text-center" style={{color:"#FE7447"}}>Following users</h3>
+        <div className="d-flex mb-4 text-center">
           {
             user_info.followedUsers.length!==0?
             user_info.followedUsers.map((followedUser)=>{
               return (
-                <div key={followedUser.id} className="rounded border border-primary media ml-3" style={{"width":"150px"}}>
-                  <img src={followedUser.gender==="male"?malegender:femalegender} 
-                  className="mr-3" alt="..." width="30" height="30"/>
-                  <div className="">
+                <div key={followedUser.id} className="rounded">
                     <div className="btn" onClick={()=>this.handleClick(followedUser.id)}>
-                    <Link  to={`/user/${followedUser.id}`}><small className="mt-0">{followedUser.name}</small></Link>
+                    <Link  to={`/user/${followedUser.id}`}  style={{textDecoration:"none", color:"#000000"}}><div className="btn btn-lg btn-secondary">{followedUser.name}</div></Link>
                     </div>
-                  </div>
                 </div>
               )
             })
             :
-            <p>Still without connections.</p>
+            <p style={{color:"#ffffff"}} className="text-center">No connections</p>
           }
           </div>
           <div className="dropdown-divider"></div>
-          <h5>Band reviews:</h5>
-          <div className="d-flex">
+          <h3 className="my-4 text-center" style={{color:"#FE7447"}}>Band reviews</h3>
+          <div className="d-flex mb-4 text-center">
             {
               user_info.reviewBand.length!==0?
               user_info.reviewBand.map((band)=>{
                 return (
-                <div key={band.nameOfBandOrPlace} className="card" style={{"width": "18rem"}}>
-                    <div className="card-body">
-                      <h5 className="card-title">{band.nameOfBandOrPlace} Rating:{band.rating}</h5>
+                <div key={band.nameOfBandOrPlace} className="card mr-2" >
+                    <div className="card-body py-2 px-5">
+                      <h5 className="card-title mb-2"><Link to={`/bands/${band.nameOfBandOrPlace}`} style={{textDecoration:"none", color:"#000000"}}>{band.nameOfBandOrPlace}</Link></h5>
+                      <h5 className="card-text mb-2" style={{color:"#FE7447"}}>{band.rating}</h5>
                       <p className="card-text">{band.comment}</p>
                     </div>
                 </div>
                 )
               })
               :
-              <p>No reviews !</p>
+              <p style={{color:"#ffffff"}} className="text-center">No reviews</p>
             }
           </div>
           <div className="dropdown-divider"></div>
-          <h5>Places reviews:</h5>
-          <div className="d-flex">
+          <h3 className="my-4 text-center" style={{color:"#FE7447"}}>Place reviews</h3>
+          <div className="d-flex mb-4 text-center">
             {
               user_info.reviewPlaces.length!==0?
               user_info.reviewPlaces.map((place)=>{
                 return (
-                <div key={place.nameOfBandOrPlace} className="card" style={{"width": "18rem"}}>
-                    <div className="card-body">
-                      <h5 className="card-title">{place.nameOfBandOrPlace} Rating:{place.rating}</h5>
+                <div key={place.nameOfBandOrPlace} className="card mr-2" >
+                    <div className="card-body py-2 px-5">
+                      <h5 className="card-title mb-2"><Link to={`/places/${place.nameOfBandOrPlace}`} style={{textDecoration:"none", color:"#000000"}}>{place.nameOfBandOrPlace}</Link></h5>
+                      <h5 className="card-text mb-2" style={{color:"#FE7447"}}>{place.rating}</h5>
                       <p className="card-text">{place.comment}</p>
                     </div>
                 </div>
                 )
               })
               :
-              <p>No reviews !</p>
+              <p style={{color:"#ffffff"}} className="text-center">No reviews</p>
             }
           </div>
     </div>

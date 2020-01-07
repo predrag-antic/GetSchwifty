@@ -1,4 +1,5 @@
 import { GET_BAND_SUCCESS } from "../actions/band.actions";
+import { ADD_REVIEW_BAND_SUCCESS } from "../actions/review.actions";
 
 const initialState = {
     name : '',
@@ -15,6 +16,11 @@ export function bandReducer( state = initialState, action ){
         case GET_BAND_SUCCESS:
             var band = (action.band);
             return band;
+        case ADD_REVIEW_BAND_SUCCESS:
+            const review = (action.review);
+            return Object.assign({}, state, {
+                bandReviews: [...state.bandReviews,review]
+              });
         default:
             return state;
     }

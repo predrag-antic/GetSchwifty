@@ -13,8 +13,8 @@ class Favorites extends Component {
   render () {
     const {user_info} =this.props;
     return (
-        <div className="container text-center">
-            <h3>Favorite bands and places</h3>
+        <div className="container text-center my-4" >
+            <h3 className="mb-4" style={{color:"#FE7447"}}>Favorite bands and places</h3>
             <div className="row">
                 <div className="col">
                 
@@ -26,10 +26,7 @@ class Favorites extends Component {
                 user_info.favoriteBands.map((band)=>{
                     return (
                     <li key={band.name} className="list-group-item">
-                        <Link to={`/bands/${band.name}`} >{band.name}</Link>,
-                        {band.type}
-                        <img className=" ml-1 rounded-circle" src={band.imageUrl} 
-                        alt="band photo" width="30" height="30"/>
+                        <Link to={`/bands/${band.name}`} style={{textDecoration:"none", color:"#000000"}}>{band.name}</Link>
                     </li>
                     )
                 })
@@ -47,9 +44,7 @@ class Favorites extends Component {
                 user_info.favoritePlaces.map((place)=>{
                     return (
                     <li key={place.name} className="list-group-item">
-                        <Link to={`/places/${place.name}`}>{place.name}</Link>
-                        <img className=" ml-1 rounded-circle" src={place.imageUrl} 
-                        alt="place photo" width="30" height="30"/>
+                        <Link to={`/places/${place.name}`} style={{textDecoration:"none", color:"#000000"}}>{place.name}</Link>
                     </li>
                     )
                 })

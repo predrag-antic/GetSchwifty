@@ -84,10 +84,10 @@ namespace GetSchwifty.Controllers
                 .Results;
 
             var bandsReviewQuery = graphClient.client.Cypher
-               .OptionalMatch("(:User)-[:LEAVE]->(bandsReviews:Review)<-[:HAS_REVIEW]-(band:Band { name:'" + name + "'})")
-               .With("bandsReviews {nameOfBandOrPlace:band.name, comment:bandsReviews.comment, rating:bandsReviews.rating }")
+               .OptionalMatch("(u:User)-[:LEAVE]->(bandsReviews:Review)<-[:HAS_REVIEW]-(band:Band { name:'" + name + "'})")
+               .With("bandsReviews {nameOfBandOrPlace:band.name, comment:bandsReviews.comment, rating:bandsReviews.rating, userId: u.id, userName: u.name }")
                 .Return((bandsReviews) => new {
-                    BandsReviews = bandsReviews.CollectAs<Review>()
+                    BandsReviews = bandsReviews.CollectAs<UserReview>()
                 })
                 .Results;
 

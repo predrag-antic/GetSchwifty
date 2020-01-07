@@ -5,6 +5,7 @@ import { getBand } from '../store/actions/band.actions';
 import ReviewForm from './ReviewForm';
 import {store} from '../App'
 import {thunk_action_addBandToFavorite} from '../store/actions/user-actions'
+import { Link } from 'react-router-dom';
 
 class Band extends React.Component {
 
@@ -60,12 +61,12 @@ class Band extends React.Component {
                                         band.bandAvgRating===0?
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> ∅</h5></div>
                                         :
-                                        <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {band.bandAvgRating}</h5></div>
+                                        <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {parseFloat(band.bandAvgRating).toFixed(2)}</h5></div>
 
                                     }
                                     {
                                     localStorage.getItem("id")?
-                                    (<div className="d-flex" style={{alignItems:"baseline"}}> 
+                                    (<div className="text-center mt-2"> 
                                     {
                                         this.alreadyFavorite()?
                                         (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-danger">
@@ -92,7 +93,7 @@ class Band extends React.Component {
                                             return(
                                             <div className="card mb-2">
                                                 <div className="card-body">
-                                                    <h4 className="card-title">{review.rating}</h4>
+                                                    <h4 className="card-title">{review.rating} - <Link to={`/user/${review.userId}`}  style={{textDecoration:"none", color:"#000000"}}>{review.userName}</Link></h4>
                                                     <p className="card-text">{review.comment}</p>
                                                 </div>
                                             </div>

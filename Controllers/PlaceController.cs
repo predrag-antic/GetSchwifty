@@ -88,9 +88,9 @@ namespace GetSchwifty.Controllers
                 .Results;
             var placeReviewsQuery = graphClient.client.Cypher
                 .OptionalMatch("(place:Place{name:'" + name + "'})-[:HAS_REVIEW]->(reviews:Review)<-[]-(u:User)")
-                .With("{nameOfBandOrPlace:place.name, comment: reviews.comment, rating:reviews.rating} as placeReviews ")
+                .With("{nameOfBandOrPlace:place.name, comment: reviews.comment, rating:reviews.rating, userId: u.id, userName: u.name} as placeReviews ")
                 .Return((placeReviews) => new {
-                    Reviews = placeReviews.CollectAs<Review>()
+                    Reviews = placeReviews.CollectAs<UserReview>()
                 })
                 .Results;
 

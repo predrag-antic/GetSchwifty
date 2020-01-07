@@ -6,7 +6,6 @@ import { placesReducer } from "./places.reducer";
 import { bandsReducer } from "./bands.reducer";
 import { bandReducer } from "./band.reducer";
 import { placeReducer } from "./place.reducer";
-import { reviewReducers } from "./review.reducer";
 
  const rootReducer = combineReducers({
     routing: routerReducer,
@@ -15,8 +14,7 @@ import { reviewReducers } from "./review.reducer";
     places : placesReducer,
     bands : bandsReducer,
     band : bandReducer,
-    place : placeReducer,
-    review : reviewReducers
+    place : placeReducer
 })
 
 export default rootReducer;

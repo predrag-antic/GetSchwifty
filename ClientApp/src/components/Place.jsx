@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import ReviewForm from './ReviewForm';
 import {store} from '../App'
 import {thunk_action_addPlaceToFavorite} from '../store/actions/user-actions'
+import { Link } from 'react-router-dom';
 
 class Place extends React.Component {
 
@@ -60,12 +61,12 @@ class Place extends React.Component {
                                         place.averageRate===0?
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> ∅</h5></div>
                                         :
-                                        <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {place.averageRate}</h5></div>
+                                        <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {parseFloat(place.averageRate).toFixed(2)}</h5></div>
 
                                     }
                                     {
                                         localStorage.getItem("id")?
-                                        (<div className="d-flex" style={{alignItems:"baseline"}}> 
+                                        (<div className="text-center mt-2"> 
                                         {
                                             this.alreadyFavorite()?
                                             (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-danger">
@@ -92,7 +93,7 @@ class Place extends React.Component {
                                             return(
                                             <div className="card mb-2">
                                                 <div className="card-body">
-                                                    <h4 className="card-title">{review.rating}</h4>
+                                                    <h4 className="card-title">{review.rating} - <Link to={`/user/${review.userId}`}  style={{textDecoration:"none", color:"#000000"}}>{review.userName}</Link></h4>
                                                     <p className="card-text">{review.comment}</p>
                                                 </div>
                                             </div>

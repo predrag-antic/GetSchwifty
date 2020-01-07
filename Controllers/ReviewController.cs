@@ -51,24 +51,40 @@ namespace GetSchwifty.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostReview([FromBody] UserReview reviewInfo)
+        public UserReview PostReview([FromBody] UserReview reviewInfo)
         {
             GraphClientConnection graphClient = new GraphClientConnection();
 
             if (graphClient == null)
             {
-                return StatusCode(500);
+                StatusCode(500);
+                return null;
             }
 
             Review newReview = new Review { comment= reviewInfo.comment, rating= reviewInfo.rating, nameOfBandOrPlace= reviewInfo.nameOfBandOrPlace};
 
-            graphClient.client.Cypher
-                .Match("(n {name:'" + reviewInfo.nameOfBandOrPlace + "'}), (u {name:'" + reviewInfo.userName + "'})")
+            var rev = graphClient.client.Cypher
+                .Match("(n {name:'" + reviewInfo.nameOfBandOrPlace + "'}), (u: User {name:'" + reviewInfo.userName + "'})")
                 .Create("(r:Review {newReview}), (u)-[:LEAVE]->(r)<-[:HAS_REVIEW]-(n)")
                 .WithParam("newReview", newReview)
-                .ExecuteWithoutResults();
+                .Return((r, u) => new {
+                    Review = r.As<Review>(),
+                    User = u.As<User>()
+                })
+                .Results;
 
-            return StatusCode(200);
+            UserReview ur = new UserReview();
+
+            ur.userId = rev.ToList()[0].User == null ? null : rev.ToList()[0].User.id;
+            ur.userName = rev.ToList()[0].User == null ? null : rev.ToList()[0].User.name;
+
+            ur.comment = rev.ToList()[0].Review == null ? null : rev.ToList()[0].Review.comment;
+            ur.rating = rev.ToList()[0].Review.rating;
+            ur.nameOfBandOrPlace = rev.ToList()[0].Review == null ? null : rev.ToList()[0].Review.nameOfBandOrPlace;
+
+            StatusCode(200);
+            return ur;
+
         }
     }
 }

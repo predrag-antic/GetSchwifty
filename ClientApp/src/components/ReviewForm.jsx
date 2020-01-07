@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addReview } from '../store/actions/review.actions';
+import { addPlaceReview, addBandReview } from '../store/actions/review.actions';
+import { withRouter } from 'react-router';
 
 class ReviewForm extends React.Component{
 
@@ -8,6 +9,7 @@ class ReviewForm extends React.Component{
         super(props);
     
         this.state = {
+            userId: '',
             userName: '',
             rating: 0,
             comment:'',
@@ -15,6 +17,7 @@ class ReviewForm extends React.Component{
             errors: false
         }
     }
+    
 
     isFormEmpty = () => {
         return !this.state.rating.length || !this.state.comment.length;
@@ -33,13 +36,17 @@ class ReviewForm extends React.Component{
         event.preventDefault();
         if(!this.isFormEmpty()){
             var review = {
+                userId: localStorage.getItem('id'),
                 userName: localStorage.getItem('name'),
                 comment: this.state.comment,
                 rating: Number(this.state.rating),
                 nameOfBandOrPlace: name
             }
-            console.log(review)
-            this.props.addReview(review);
+
+            if(this.props.match.path==="/places/:id")
+                this.props.addPlaceReview(review);
+            else
+                this.props.addBandReview(review);
             this.setState({errors:false});
             this.setState({
                 comment: '',
@@ -105,8 +112,9 @@ class ReviewForm extends React.Component{
 
 function mapDispatchToProps(dispatch){
     return{
-        addReview: (review) => (dispatch(addReview(review)))
+        addBandReview: (review) => (dispatch(addBandReview(review))),
+        addPlaceReview: (review) => (dispatch(addPlaceReview(review)))
     }
 }
 
-export default connect(null,mapDispatchToProps)(ReviewForm)
+export default withRouter(connect(null,mapDispatchToProps)(ReviewForm));

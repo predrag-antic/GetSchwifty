@@ -1,9 +1,14 @@
 import { addReviewService } from '../../services/review.service';
-import { addReviewSucces } from '../actions/review.actions';
+import { addBandReviewSucces, addPlaceReviewSucces } from '../actions/review.actions';
 import { put } from 'redux-saga/effects';
 
 
-export function* postReview(review){
+export function* postBandReview(review){
     const response = yield addReviewService(review.review);
-    yield put(addReviewSucces(response));
+    yield put(addBandReviewSucces(response));
+}
+
+export function* postPlaceReview(review){
+    const response = yield addReviewService(review.review);
+    yield put(addPlaceReviewSucces(response));
 }

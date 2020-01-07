@@ -38,17 +38,21 @@ class UserInfo extends Component {
     render () {
         const {user_info} =this.props;
         return (
-                <div className="row">
+                <div className="row my-4" style={{color:"#ffffff"}}>
                 <div className="col">
                 </div>
                 <div className="col img ">
                     <div className=" text-center">
                     <img src={photo} alt="" className="img-rounded"/>
                     </div>
+                </div>
+                <div className="col details ">
+                <div className="d-flex pb-2">
+                    <h4 className="mb-0 mr-3 pt-1" style={{color:"#FE7447"}}>{user_info.name}</h4>
                     {
                       !this.isMyProfile()?
                       localStorage.getItem("id")?
-                      (<div className="mt-1 text-center">
+                      (<div>
                       {
                           this.alreadyFollow()?
                           <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-primary">
@@ -56,7 +60,7 @@ class UserInfo extends Component {
                           </button>
                           :
                           <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-outline-primary">
-                          +FOLLOW
+                          FOLLOW
                           </button>
                       }
                       </div>)
@@ -66,23 +70,16 @@ class UserInfo extends Component {
                       null
                     }
                 </div>
-                <div className="col details ">
-                <blockquote>
-                    <h4>{user_info.name}</h4>
-                </blockquote>
-                <p>
-                    Gender: {user_info.gender} <br/>
-                    Age: {user_info.age}<br/>
-                </p>
-                My places:
+                <p className="d-flex m-0">Gender: <h5 className="ml-2">{user_info.gender}</h5></p>
+                <p className="d-flex m-0">Age: <h5 className="ml-2">{user_info.age}</h5></p>
+                <p>Owner of:</p>
                 {
                     user_info.isOwner?
                     user_info.myPlaces.map((placeName)=>{
-                    const color='#'+(Math.random()*0xFFFFFF<<0).toString(16);
                     return (
-                        <Link key={placeName} className="btn ml-3 mt-1" 
-                        style={{"backgroundColor":`${color}`}} to={`/places/${placeName}`}>
-                            <small  style={{"color":`white`}}>{placeName}</small>
+                        <Link key={placeName} className="btn mr-1" 
+                        style={{"backgroundColor":"#FE7447"}} to={`/places/${placeName}`}>
+                            <small style={{"color":`white`}}>{placeName}</small>
                         </Link>
                     )
                     })

@@ -13,6 +13,6 @@ namespace GetSchwifty.Entities
         public string phone { get; set; }
         public float bandAvgRating { get; set; }
         public int numOfRatings { get; set; }
-        public List<Review> bandReviews { get; set; }
+        public List<UserReview> bandReviews { get; set; }
     }
 }
