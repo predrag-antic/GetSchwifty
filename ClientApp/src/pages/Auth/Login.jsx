@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './login.css'
-import { Link } from 'react-router-dom';
+import { Link,Redirect } from 'react-router-dom';
 import {thunk_action_login} from '../../store/actions/auth-actions'
 import {store} from '../../App'
 import {connect} from 'react-redux'
@@ -65,6 +65,12 @@ class Login extends Component {
 
   render () {
     const {username,password,passwordError,usernameError,usernameCorrect,passwordCorrect} = this.state;
+
+    if(localStorage.getItem("id"))
+    {
+        return <Redirect to="/home" />
+    }
+
     return (
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">

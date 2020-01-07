@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './login.css'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {registerNewUser} from '../../service/service.user'
 const uuidv1 = require('uuid/v1');
 
@@ -92,6 +92,12 @@ class Register extends Component {
 
   render () {
     const {username,password,isOwner,age,userNameError,passwordError,genderError} = this.state;
+
+    if(localStorage.getItem("id"))
+    {
+        return <Redirect to="/home" />
+    }
+
     return (
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">

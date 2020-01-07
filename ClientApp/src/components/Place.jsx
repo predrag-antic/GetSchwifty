@@ -63,18 +63,23 @@ class Place extends React.Component {
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {place.averageRate}</h5></div>
 
                                     }
-                                    <div className="d-flex" style={{alignItems:"baseline"}}> 
                                     {
-                                        this.alreadyFavorite()?
-                                        (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-danger">
-                                            Favorite
-                                        </button>)
+                                        localStorage.getItem("id")?
+                                        (<div className="d-flex" style={{alignItems:"baseline"}}> 
+                                        {
+                                            this.alreadyFavorite()?
+                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-danger">
+                                                Favorite
+                                            </button>)
+                                            :
+                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-outline-danger">
+                                                Add To Favorite
+                                            </button>)
+                                        }
+                                        </div>)
                                         :
-                                        (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-outline-danger">
-                                            Add To Favorite
-                                        </button>)
+                                        null
                                     }
-                                    </div>
                                 </div>
                             </div>
                         </div>

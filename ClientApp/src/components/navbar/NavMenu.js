@@ -21,6 +21,11 @@ export class NavMenu extends Component {
     });
   }
 
+  handleLogout=()=>{
+    localStorage.clear();
+    window.location.reload(true);
+  }
+
   render () {
     return (
       <header>
@@ -36,12 +41,24 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/bands">Bands</NavLink>
                 </NavItem>
+                {
+                !localStorage.getItem("id")?
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
                 </NavItem>
+                :
+                null
+                }
+                {
+                !localStorage.getItem("id")?
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
                 </NavItem>
+                :
+                <div className="btn btn-outline-primary" onClick={this.handleLogout}>
+                  Logout
+                </div>
+                }
               </ul>
             </Collapse>
           </Container>

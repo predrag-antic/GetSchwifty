@@ -63,7 +63,9 @@ class Band extends React.Component {
                                         <div className="d-flex" style={{alignItems:"baseline"}}>Average rate: <h5 className="card-text ml-2"> {band.bandAvgRating}</h5></div>
 
                                     }
-                                    <div className="d-flex" style={{alignItems:"baseline"}}> 
+                                    {
+                                    localStorage.getItem("id")?
+                                    (<div className="d-flex" style={{alignItems:"baseline"}}> 
                                     {
                                         this.alreadyFavorite()?
                                         (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-danger">
@@ -74,7 +76,10 @@ class Band extends React.Component {
                                             Add To Favorite
                                         </button>)
                                     }
-                                    </div>
+                                    </div>)
+                                    :
+                                    null
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -37,18 +37,23 @@ class UserInfo extends Component {
                     <div className=" text-center">
                     <img src={photo} alt="" className="img-rounded"/>
                     </div>
-                    <div className="mt-1 text-center">
                     {
-                        this.alreadyFollow()?
-                        <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-primary">
-                        FOLLOWING
-                        </button>
-                        :
-                        <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-outline-primary">
-                        +FOLLOW
-                        </button>
+                      localStorage.getItem("id")?
+                      (<div className="mt-1 text-center">
+                      {
+                          this.alreadyFollow()?
+                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-primary">
+                          FOLLOWING
+                          </button>
+                          :
+                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-outline-primary">
+                          +FOLLOW
+                          </button>
+                      }
+                      </div>)
+                      :
+                      null
                     }
-                    </div>
                 </div>
                 <div className="col details ">
                 <blockquote>
