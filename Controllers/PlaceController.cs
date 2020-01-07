@@ -168,6 +168,19 @@ namespace GetSchwifty.Controllers
             {  
                 return StatusCode(500, "{message:\"Something went wrong with db\"}");
             }
+
+            var bandPlaceQuery = graphClient.client.Cypher
+                .Match("(band:Band{name: '" + _bandTimeAndPlace.bandName + "'})-[p:PLAY{time:'"+ _bandTimeAndPlace.time+ "'}]->(place:Place{name:'"+ _bandTimeAndPlace.placeName+ "'})")
+                .Return((band) => new
+                {
+                    Band = band.As<Band>()
+                })
+                .Results;
+            if (bandPlaceQuery.Count() == 1)
+            {
+                return StatusCode(403, "{message:\"Band doesn't exist\"}");
+            }
+
             var bandQuery = graphClient.client.Cypher
                 .Match("(band:Band{name: '" + _bandTimeAndPlace.bandName + "'})")
                 .Return((band) => new

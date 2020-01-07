@@ -87,10 +87,10 @@ class CreatePlace extends Component {
   render () {
     const {name,nameError,address,addressError,phone,phoneError,imageUrl,imageUrlError} = this.state;
 
-    // if(localStorage.getItem("id"))
-    // {
-    //     return <Redirect to="/home" />
-    // }
+    if(!localStorage.getItem("id") || this.props.current_user.isOwner===false)
+    {
+        return <Redirect to="/home" />
+    }
 
     return (
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
@@ -150,10 +150,16 @@ class CreatePlace extends Component {
   }
 }
 
+function mapStateToProps(state){
+    return {
+        current_user:state.current_user
+    }
+}
+
 function mapDispatchToProps(dispatch){
     return {
         addPlaceToMyPlaces:(name)=>(dispatch(addPlaceToMyPlaces(name)))
     }
 }
 
-export default connect(null,mapDispatchToProps)(CreatePlace);
+export default connect(mapStateToProps,mapDispatchToProps)(CreatePlace);
