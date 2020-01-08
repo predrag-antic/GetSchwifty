@@ -70,8 +70,8 @@ class UserInfo extends Component {
                       null
                     }
                 </div>
-                <p className="d-flex m-0">Gender: <h5 className="ml-2">{user_info.gender}</h5></p>
-                <p className="d-flex m-0">Age: <h5 className="ml-2">{user_info.age}</h5></p>
+                <div className="d-flex m-0">Gender: <h5 className="ml-2">{user_info.gender}</h5></div>
+                <div className="d-flex m-0">Age: <h5 className="ml-2">{user_info.age}</h5></div>
                 <p>Owner of:</p>
                 {
                     user_info.isOwner?

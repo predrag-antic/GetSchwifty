@@ -49,18 +49,6 @@ class NavMenu extends Component {
                   <NavLink tag={Link} className="text-light" to="/bands">Bands</NavLink>
                 </NavItem>
                 {
-                localStorage.getItem("id")?
-                <NavItem>
-                  <div onClick={()=>this.handleClick(this.props.current_user.id)}>
-                    <NavLink tag={Link} className="text-light" to={{pathname:`/user/${this.props.current_user.id}`}}>
-                      Profile
-                    </NavLink>
-                  </div>
-                </NavItem>
-                :
-                null
-                }
-                {
                   localStorage.getItem("id")?
                   this.props.current_user.isOwner?
                   <NavItem>
@@ -75,12 +63,24 @@ class NavMenu extends Component {
                   localStorage.getItem("id")?
                   this.props.current_user.isOwner?
                   <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/play">Play</NavLink>
+                    <NavLink tag={Link} className="text-light" to="/play">Add event</NavLink>
                   </NavItem>
                   :
                   null
                   :
                   null
+                }
+                {
+                localStorage.getItem("id")?
+                <NavItem>
+                  <div onClick={()=>this.handleClick(this.props.current_user.id)}>
+                    <NavLink tag={Link} className="text-light" to={{pathname:`/user/${this.props.current_user.id}`}}>
+                      Profile
+                    </NavLink>
+                  </div>
+                </NavItem>
+                :
+                null
                 }
                 {
                 !localStorage.getItem("id")?

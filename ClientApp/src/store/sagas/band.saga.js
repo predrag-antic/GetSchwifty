@@ -10,6 +10,5 @@ export function* fetchBands() {
 
 export function* fetchBand(id) {
     const band = yield getBandService(id.id);
-    console.log(band);
     yield put(getBandSuccess(band));
 }

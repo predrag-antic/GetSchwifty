@@ -1,4 +1,3 @@
-import {Action} from 'redux';
 import {GET_USER_SUCCESS, GET_USER_UNSUCCESS} from '../actions/user-actions';
 
 const initialState={

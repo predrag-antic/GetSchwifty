@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PlacesList from '../components/PlacesList';
 import BandsList from '../components/BandsList';
@@ -19,7 +19,7 @@ class Home extends React.Component {
               <p>Mollit id in tempor exercitation id aliquip duis nisi deserunt.</p>
             </div>
             <div className="col-6 ml-auto">
-              <img src="https://zone1-ibizaspotlightsl.netdna-ssl.com/sites/default/files/styles/auto_1500_width/public/article-images/135251/slideshow-1572267562.jpg" className="img-fluid"></img>
+              <img src="https://zone1-ibizaspotlightsl.netdna-ssl.com/sites/default/files/styles/auto_1500_width/public/article-images/135251/slideshow-1572267562.jpg" alt="home img" className="img-fluid"></img>
             </div>
           </div>
         </div>

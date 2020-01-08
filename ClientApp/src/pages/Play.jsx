@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2'
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {bandPlayInPlace} from '../services/place.service'
 import {connect} from 'react-redux'
 
-const days = ["ponedeljak","utorak","sreda","cetvrtak","petak","subota"];
+const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
 class Play extends Component {    
 
@@ -14,7 +14,7 @@ class Play extends Component {
             placeName:"",
             bandName:"",
             time:"0",
-            day:"ponedeljak",
+            day:"Monday",
             type:"",
             bandNameError:false,
             typeError:false
@@ -85,9 +85,8 @@ class Play extends Component {
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">
                 <div className="form row mt-3">
-                    <label for="inputState" class="m-3">Choose Place</label>
-                    <select id="inputState" name="placeName" class="form-control m-3" onChange={this.onChange} 
-                    defaultValue="Stara Srbija">
+                    <label>Select place:</label>
+                    <select name="placeName" className="form-control" onChange={this.onChange}>
                         {
                             this.props.current_user.myPlaces.map((place)=>{
                                 return (
@@ -95,13 +94,13 @@ class Play extends Component {
                                 )
                             })
                         }
-                        <option value="test" key="test">{"test"}</option>
+                        <option value="" key="test">{"..."}</option>
                     </select>
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
-                        <label>Band</label>
-                        <input onChange={this.onChange} type="text" name="bandName" className="form-control" id="validationCustom01" placeholder="Band name" value={bandName} required/>
+                        <label>Band:</label>
+                        <input onChange={this.onChange} type="text" name="bandName" className="form-control"  placeholder="Please insert band name" value={bandName} required/>
                         {
                             bandNameError?
                             <small  style={{"color":"red"}}>Band name is required!</small>
@@ -111,8 +110,8 @@ class Play extends Component {
                     </div>
                 </div>
                 <div className="form row mt-3">
-                    <label for="inputState" class="m-3">Day when band will play:</label>
-                    <select id="inputState" name="day" class="form-control m-3" onChange={this.onChange}>
+                    <label>Day when band will play:</label>
+                    <select name="day" className="form-control" onChange={this.onChange}>
                         {
                             days.map((day)=>{
                                 return (
@@ -124,14 +123,14 @@ class Play extends Component {
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
-                        <label>Time</label>
-                        <input onChange={this.onChange} type="number" name="time" className="form-control" id="validationCustom01" min="0" max="23" placeholder="0" value={time} required/>
+                        <label>Time:</label>
+                        <input onChange={this.onChange} type="number" name="time" className="form-control"  min="0" max="23" placeholder="Please insert time when event starts" value={time} required/>
                     </div>
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
                         <label>Type of music:</label>
-                        <input onChange={this.onChange} type="text" name="type" className="form-control" id="validationCustom01" placeholder="type" value={type} required/>
+                        <input onChange={this.onChange} type="text" name="type" className="form-control"  placeholder="Please insert type of music" value={type} required/>
                         {
                             typeError?
                             <small  style={{"color":"red"}}>Type is required!</small>
@@ -141,7 +140,7 @@ class Play extends Component {
                     </div>
                 </div>
             </form>
-            <button className="btn btn-primary" onClick={this.handleSubmit}>Post place</button>
+            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add event</button>
         </div>
     );
   }

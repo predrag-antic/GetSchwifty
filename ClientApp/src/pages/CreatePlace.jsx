@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2'
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {createNewPlace} from '../service/service.user'
 import {addPlaceToMyPlaces} from '../store/actions/user-actions'
 import {connect} from 'react-redux'
@@ -29,7 +29,7 @@ class CreatePlace extends Component {
         const {name,imageUrl,phone,address} = this.state;
         var noError=true;
 
-        if(name.length<=7){
+        if(name.length<=2){
             this.setState({"nameError":true})
             noError=false;
         }else {
@@ -43,7 +43,7 @@ class CreatePlace extends Component {
             this.setState({"imageUrlError":false})
         }
 
-        if(address.length<=7){
+        if(address.length===0){
             this.setState({"addressError":true})
             noError=false;
         }else {
@@ -97,11 +97,11 @@ class CreatePlace extends Component {
             <form className="mb-3">
                 <div className="form-row">
                     <div className="col">
-                        <label>Place name</label>
-                        <input onChange={this.onChange} type="text" name="name" className="form-control" id="validationCustom01" placeholder="name" value={name} required/>
+                        <label>Name:</label>
+                        <input onChange={this.onChange} type="text" name="name" className="form-control" placeholder="Please insert place name" value={name} required/>
                         {
                             nameError?
-                            <small  style={{"color":"red"}}>Place name must contain at least 8 characters!</small>
+                            <small  style={{"color":"red"}}>Place name must contain at least 2 characters!</small>
                             :
                             <small/>
                         }
@@ -109,11 +109,11 @@ class CreatePlace extends Component {
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
-                        <label>Address</label>
-                        <input onChange={this.onChange} type="text" name="address" className="form-control" id="validationCustom01" placeholder="address" value={address} required/>
+                        <label>Address:</label>
+                        <input onChange={this.onChange} type="text" name="address" className="form-control" placeholder="Please insert place address" value={address} required/>
                         {
                             addressError?
-                            <small  style={{"color":"red"}}>Address name must contain at least 8 characters!</small>
+                            <small  style={{"color":"red"}}>Address can not be empty!</small>
                             :
                             <small/>
                         }
@@ -122,10 +122,10 @@ class CreatePlace extends Component {
                 <div className="form row mt-3">
                     <div className="col">
                         <label>Phone:</label>
-                        <input onChange={this.onChange} type="text" name="phone" className="form-control" id="validationCustom01" placeholder="phone" value={phone} required/>
+                        <input onChange={this.onChange} type="text" name="phone" className="form-control" placeholder="Please insert contact phone" value={phone} required/>
                         {
                             phoneError?
-                            <small  style={{"color":"red"}}>Phone name must contain at least 8 characters!</small>
+                            <small  style={{"color":"red"}}>Phone name must contain at least 8 numbers!</small>
                             :
                             <small/>
                         }
@@ -133,18 +133,18 @@ class CreatePlace extends Component {
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
-                        <label>ImageUrl:</label>
-                        <input onChange={this.onChange} type="text" name="imageUrl" className="form-control" id="validationCustom01" placeholder="imageUrl" value={imageUrl} required/>
+                        <label>Image url:</label>
+                        <input onChange={this.onChange} type="text" name="imageUrl" className="form-control" placeholder="Please add image url of place" value={imageUrl} required/>
                         {
                             imageUrlError?
-                            <small  style={{"color":"red"}}>ImageUrl name must contain at least 8 characters!</small>
+                            <small  style={{"color":"red"}}>ImageUrl can not be empty!</small>
                             :
                             <small/>
                         }
                     </div>
                 </div>
             </form>
-            <button className="btn btn-primary" onClick={this.handleSubmit}>Post place</button>
+            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add place</button>
         </div>
     );
   }
