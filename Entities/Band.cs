@@ -11,8 +11,7 @@ namespace GetSchwifty.Entities
         public string type { get; set; }  //rock, pop, metal, jazz..
         public string imageUrl { get; set; }
         public string phone { get; set; }
-        public float bandAvgRating { get; set; }
-        public int numOfRatings { get; set; }
+        public double bandAvgRating { get; set; }
         public List<UserReview> bandReviews { get; set; }
     }
 }

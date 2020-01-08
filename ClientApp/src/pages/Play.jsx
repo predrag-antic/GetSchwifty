@@ -74,7 +74,11 @@ class Play extends Component {
     }
 
   render () {
-    const {bandName,time,type,bandNameError,typeError} = this.state;
+    const {time,type,bandNameError,typeError} = this.state;
+    var bands = Array.from(this.props.bands);
+    bands = bands.map(band => {
+        return band.name
+     })
 
     if(!localStorage.getItem("id") || this.props.current_user.isOwner===false)
     {
@@ -87,6 +91,7 @@ class Play extends Component {
                 <div className="form row mt-3">
                     <label>Select place:</label>
                     <select name="placeName" className="form-control" onChange={this.onChange}>
+                        <option value="" key="test">{"..."}</option>
                         {
                             this.props.current_user.myPlaces.map((place)=>{
                                 return (
@@ -94,16 +99,24 @@ class Play extends Component {
                                 )
                             })
                         }
-                        <option value="" key="test">{"..."}</option>
                     </select>
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
                         <label>Band:</label>
-                        <input onChange={this.onChange} type="text" name="bandName" className="form-control"  placeholder="Please insert band name" value={bandName} required/>
+                        <select name="bandName" className="form-control" onChange={this.onChange}>
+                            <option value="" key="test">{"..."}</option>
+                        {
+                            bands.map((band)=>{
+                                return (
+                                    <option value={band} key={band} >{band}</option>
+                                )
+                            })
+                        }
+                        </select>
                         {
                             bandNameError?
-                            <small  style={{"color":"red"}}>Band name is required!</small>
+                            <small  style={{"color":"red"}}>Select band!</small>
                             :
                             <small/>
                         }
@@ -148,7 +161,8 @@ class Play extends Component {
 
 function mapStateToProps(state){
     return {
-        current_user:state.current_user
+        current_user:state.current_user,
+        bands : state.bands
     }
 }
 

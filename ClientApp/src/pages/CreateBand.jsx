@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2'
 import { Redirect } from 'react-router-dom';
-import {createNewPlace} from '../service/service.user'
-import {addPlaceToMyPlaces} from '../store/actions/user-actions'
 import {connect} from 'react-redux'
+import { createNewBand } from '../store/actions/band.actions';
+import { createBandService } from '../services/band.service';
 
 class CreatePlace extends Component {    
 
@@ -11,13 +11,13 @@ class CreatePlace extends Component {
         super(props);
         this.state={
             name:"",
-            address:"",
             phone:"",
+            type:"",
             imageUrl:"",
             nameError:false,
-            addressError:false,
             uniqueNameError:false,
             phoneError:false,
+            typeError:false,
             imageUrlError:false
          }
     }
@@ -27,12 +27,12 @@ class CreatePlace extends Component {
      }
 
     checkInput=()=>{
-        const {name,imageUrl,phone,address} = this.state;
+        const {name,imageUrl,phone,type} = this.state;
         var noError=true;
-        var places = Array.from(this.props.places);
+        var bands = Array.from(this.props.bands);
         
-        places = places.map(place => {
-           return place.name
+        bands = bands.map(band => {
+           return band.name
         })
 
         if(name.length<=2){
@@ -42,7 +42,7 @@ class CreatePlace extends Component {
             this.setState({"nameError":false})
         }
 
-        if(places.includes(name)){
+        if(bands.includes(name)){
             this.setState({"uniqueNameError":true})
             noError=false;
         }else {
@@ -56,11 +56,11 @@ class CreatePlace extends Component {
             this.setState({"imageUrlError":false})
         }
 
-        if(address.length===0){
-            this.setState({"addressError":true})
+        if(type.length===0){
+            this.setState({"typeError":true})
             noError=false;
         }else {
-            this.setState({"addressError":false})
+            this.setState({"typeError":false})
         }
 
         if(phone.length<=7){
@@ -74,33 +74,33 @@ class CreatePlace extends Component {
     }
 
     handleSubmit=()=>{
-        const {name,phone,address,imageUrl} = this.state;
+        const {name,phone,type,imageUrl} = this.state;
         if(this.checkInput()){
 
-            const place = {
-                ownerId:localStorage.getItem("id"),
+            const newBand = {
                 name:name,
-                address:address,
+                type:type,
                 phone:phone,
                 imageUrl:imageUrl
             }
-            createNewPlace(place).then(response=>{
+            createBandService(newBand).then(response=>{
                 if(response.status===200){
-                    const placeName=response.data.name;
-                    console.log(placeName);
-                    this.props.addPlaceToMyPlaces(placeName);
-                    Swal.fire('Success',`You just created ${placeName}`,'success')
+                    const bandName=response.data.name;
+                    this.props.createNewBand(bandName);
+                    Swal.fire('Success',`You just created ${bandName}`,'success')
                 }else {
                     Swal.fire('Error','Somethnig went wrong! Try again!','error')
                 }
             })
+            
+            
         }
     }
 
   render () {
-    const {name,nameError,address,addressError,phone,phoneError,imageUrl,imageUrlError,uniqueNameError} = this.state;
+    const {name,nameError,typeError,phone,phoneError,imageUrl,imageUrlError,uniqueNameError,type} = this.state;
 
-    if(!localStorage.getItem("id") || this.props.current_user.isOwner===false)
+    if(!localStorage.getItem("id") )
     {
         return <Redirect to="/home" />
     }
@@ -111,16 +111,16 @@ class CreatePlace extends Component {
                 <div className="form-row">
                     <div className="col">
                         <label>Name:</label>
-                        <input onChange={this.onChange} type="text" name="name" className="form-control" placeholder="Please insert place name" value={name} required/>
+                        <input onChange={this.onChange} type="text" name="name" className="form-control" placeholder="Please insert band name" value={name} required/>
                         {
                             nameError?
-                            <small  style={{"color":"red"}}>Place name must contain at least 2 characters!</small>
+                            <small  style={{"color":"red"}}>Band name must contain at least 2 characters!</small>
                             :
                             <small/>
                         }
                         {
                             uniqueNameError?
-                            <small  style={{"color":"red"}}>Place name already exists!</small>
+                            <small  style={{"color":"red"}}>Band name already exists!</small>
                             :
                             <small/>
                         }
@@ -128,11 +128,11 @@ class CreatePlace extends Component {
                 </div>
                 <div className="form row mt-3">
                     <div className="col">
-                        <label>Address:</label>
-                        <input onChange={this.onChange} type="text" name="address" className="form-control" placeholder="Please insert place address" value={address} required/>
+                        <label>Type:</label>
+                        <input onChange={this.onChange} type="text" name="type" className="form-control" placeholder="Please insert music type of band" value={type} required/>
                         {
-                            addressError?
-                            <small  style={{"color":"red"}}>Address can not be empty!</small>
+                            typeError?
+                            <small  style={{"color":"red"}}>Type can not be empty!</small>
                             :
                             <small/>
                         }
@@ -144,7 +144,7 @@ class CreatePlace extends Component {
                         <input onChange={this.onChange} type="text" name="phone" className="form-control" placeholder="Please insert contact phone" value={phone} required/>
                         {
                             phoneError?
-                            <small  style={{"color":"red"}}>Phone name must contain at least 8 numbers!</small>
+                            <small  style={{"color":"red"}}>Phone must contain at least 8 numbers!</small>
                             :
                             <small/>
                         }
@@ -153,7 +153,7 @@ class CreatePlace extends Component {
                 <div className="form row mt-3">
                     <div className="col">
                         <label>Image url:</label>
-                        <input onChange={this.onChange} type="text" name="imageUrl" className="form-control" placeholder="Please add image url of place" value={imageUrl} required/>
+                        <input onChange={this.onChange} type="text" name="imageUrl" className="form-control" placeholder="Please add image url of band" value={imageUrl} required/>
                         {
                             imageUrlError?
                             <small  style={{"color":"red"}}>ImageUrl can not be empty!</small>
@@ -163,22 +163,21 @@ class CreatePlace extends Component {
                     </div>
                 </div>
             </form>
-            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add place</button>
+            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add band</button>
         </div>
     );
   }
 }
 
-function mapStateToProps(state){
+function mapDispatchToProps(dispatch){
     return {
-        current_user:state.current_user,
-        places : state.places
+        createNewBand:(name)=>(dispatch(createNewBand(name)))
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapStateToProps(state){
     return {
-        addPlaceToMyPlaces:(name)=>(dispatch(addPlaceToMyPlaces(name)))
+        bands : state.bands
     }
 }
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {store} from '../../App'
 import {thunk_action_followUser} from '../../store/actions/user-actions'
 import {connect} from 'react-redux'
-import photo from '../../resources/user.png'
+import avatar from '../../resources/avatar.png'
 
 class UserInfo extends Component { 
     
@@ -39,27 +39,26 @@ class UserInfo extends Component {
         const {user_info} =this.props;
         return (
                 <div className="row my-4" style={{color:"#ffffff"}}>
-                <div className="col">
-                </div>
-                <div className="col img ">
-                    <div className=" text-center">
-                    <img src={photo} alt="" className="img-rounded"/>
+                
+                <div className="col-6 img">
+                    <div className=" text-right">
+                    <img src={avatar} style={{height:"250px",width:"250px"}} alt="" className="img-rounded"/>
                     </div>
                 </div>
-                <div className="col details ">
+                <div className="col-6 details ">
                 <div className="d-flex pb-2">
-                    <h4 className="mb-0 mr-3 pt-1" style={{color:"#FE7447"}}>{user_info.name}</h4>
+                    <h4 className="mb-0 mr-4 pt-1" style={{color:"#FE7447"}}>{user_info.name}</h4>
                     {
                       !this.isMyProfile()?
                       localStorage.getItem("id")?
                       (<div>
                       {
                           this.alreadyFollow()?
-                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-primary">
+                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-outline-primary">
                           FOLLOWING
                           </button>
                           :
-                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-outline-primary">
+                          <button onClick={()=>this.handleFollow(user_info.id)} type="button" className="btn btn-primary">
                           FOLLOW
                           </button>
                       }
@@ -77,7 +76,7 @@ class UserInfo extends Component {
                     user_info.isOwner?
                     user_info.myPlaces.map((placeName)=>{
                     return (
-                        <Link key={placeName} className="btn mr-1" 
+                        <Link key={placeName} className="btn mr-1 mb-1" 
                         style={{"backgroundColor":"#FE7447"}} to={`/places/${placeName}`}>
                             <small style={{"color":`white`}}>{placeName}</small>
                         </Link>
@@ -88,8 +87,6 @@ class UserInfo extends Component {
                 }
                 <br/>
                 
-                </div>
-                <div className="col">
                 </div>
                 </div>
         )

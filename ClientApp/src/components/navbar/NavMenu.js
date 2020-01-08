@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { 
+  Collapse, 
+  Container, 
+  Navbar, 
+  NavbarBrand, 
+  NavbarToggler, 
+  NavItem, 
+  NavLink, 
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem, 
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import {connect} from 'react-redux'
 import {store} from '../../App'
 import {thunk_action_getUserById} from '../../store/actions/user-actions'
+import user from "../../resources/user-xxl.png"
+import list from "../../resources/add-list-xxl.png"
 
 class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -14,7 +28,9 @@ class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      isOpen: false,
+      setIsOpen: false
     };
   }
 
@@ -34,6 +50,9 @@ class NavMenu extends Component {
   }
 
   render () {
+    const {isOpen, setIsOpen} = this.state;
+    const toggle = () => setIsOpen(!isOpen);
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark mb-5" light>
@@ -46,36 +65,52 @@ class NavMenu extends Component {
                   <NavLink tag={Link} className="text-light" to="/places">Places</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/bands">Bands</NavLink>
+                  <NavLink tag={Link} className="text-light mr-1" to="/bands">Bands</NavLink>
                 </NavItem>
                 {
                   localStorage.getItem("id")?
-                  this.props.current_user.isOwner?
-                  <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/create-place">Create Place</NavLink>
-                  </NavItem>
-                  :
-                  null
-                  :
-                  null
-                }
-                {
-                  localStorage.getItem("id")?
-                  this.props.current_user.isOwner?
-                  <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/play">Add event</NavLink>
-                  </NavItem>
-                  :
-                  null
-                  :
-                  null
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret className="text-light">
+                    <img src={list} style={{height:"30px",width:"30px"}} alt='profile img'></img>
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>
+                      {
+                        this.props.current_user.isOwner?
+                        <NavItem>
+                          <NavLink tag={Link} className="text-dark" to="/create-place">Create Place</NavLink>
+                        </NavItem>
+                        :
+                        null
+                      }
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/create-band">Create Band</NavLink>
+                      </NavItem>
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>
+                      {
+                      this.props.current_user.isOwner?
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/play">Add event</NavLink>
+                      </NavItem>
+                      :
+                      null
+                      }
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                :
+                null
                 }
                 {
                 localStorage.getItem("id")?
                 <NavItem>
                   <div onClick={()=>this.handleClick(this.props.current_user.id)}>
                     <NavLink tag={Link} className="text-light" to={{pathname:`/user/${this.props.current_user.id}`}}>
-                      Profile
+                       <img src={user} style={{height:"30px",width:"30px"}} alt='profile img'></img>
                     </NavLink>
                   </div>
                 </NavItem>
@@ -96,9 +131,11 @@ class NavMenu extends Component {
                   <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
                 </NavItem>
                 :
-                <div className="btn btn-outline-primary" onClick={this.handleLogout}>
-                  Logout
-                </div>
+                <NavItem>
+                  <NavLink tag={Link} className="text-light" to="/home" onClick={this.handleLogout}>
+                    Logout
+                  </NavLink>
+                </NavItem>
                 }
               </ul>
             </Collapse>

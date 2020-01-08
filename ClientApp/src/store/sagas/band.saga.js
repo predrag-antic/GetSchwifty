@@ -1,6 +1,6 @@
-import { getBandsService, getBandService } from "../../services/band.service";
+import { getBandsService, getBandService, createBandService } from "../../services/band.service";
 import { put } from 'redux-saga/effects';
-import { getBands, getBandSuccess } from "../actions/band.actions";
+import { getBands, getBandSuccess, createNewBandSuccess } from "../actions/band.actions";
 
 
 export function* fetchBands() {
@@ -11,4 +11,9 @@ export function* fetchBands() {
 export function* fetchBand(id) {
     const band = yield getBandService(id.id);
     yield put(getBandSuccess(band));
+}
+
+export function* createBand(band){
+    const newBand = yield createBandService(band.band);
+    yield put(createNewBandSuccess(newBand));
 }

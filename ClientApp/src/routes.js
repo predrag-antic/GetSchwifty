@@ -8,12 +8,18 @@ import Band from "./components/Band";
 import User from "./pages/User";
 import CreatePlace from "./pages/CreatePlace";
 import Play from "./pages/Play";
+import CreateBand from "./pages/CreateBand";
 
 var routes = [
     {
         path:"/play",
         name:"Play",
         component: Play
+    },
+    {
+        path:"/create-band",
+        name:"CreateBand",
+        component: CreateBand
     },
     {
         path:"/create-place",
