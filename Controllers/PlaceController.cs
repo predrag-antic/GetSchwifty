@@ -55,7 +55,7 @@ namespace GetSchwifty.Controllers
             return sortedRatedPlaces;
         }
 
-        // GET: api/Place/5
+        // GET: api/Place/name
         [HttpGet("{name}")]
         public Place Get(string name)
         {
@@ -103,6 +103,14 @@ namespace GetSchwifty.Controllers
                 })
                 .Results;
 
+            var placeEvents = graphClient.client.Cypher
+                .OptionalMatch("(events:Event)-[:HAPPENS]->(place:Place{name:'" + name + "'})")
+                .Return((events) => new
+                {
+                    Events = events.CollectAs<Event>()
+                })
+                .Results;
+
             placeInfo.name = placeQuery.ToList()[0].Place == null? null : placeQuery.ToList()[0].Place.name;
             placeInfo.address = placeQuery.ToList()[0].Place == null ? null : placeQuery.ToList()[0].Place.address;
             placeInfo.averageRate = placeAvgRate.ToList()[0].AverageRate;
@@ -110,7 +118,8 @@ namespace GetSchwifty.Controllers
             placeInfo.phone = placeQuery.ToList()[0].Place == null ? null : placeQuery.ToList()[0].Place.phone;
             placeInfo.placeBands = placeBandsQuery.ToList()[0].placeBandsTime == null ? null : placeBandsQuery.ToList()[0].placeBandsTime.ToList();
             placeInfo.placeReviews = placeReviewsQuery.ToList()[0].Reviews == null ? null : placeReviewsQuery.ToList()[0].Reviews.ToList();
-
+            //placeInfo.listOfEvents = placeEvents.ToList()[0].Events == null ? null : placeEvents.ToList()[0].Events.ToList();
+            placeInfo.listOfEvents = placeEvents.ToList()[0].Events.ToList();
             return placeInfo;
         }
 
