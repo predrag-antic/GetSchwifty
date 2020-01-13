@@ -20,7 +20,7 @@ export function userInfoReducer(state=initialState,action){
     switch(action.type){
         case GET_USER_SUCCESS:
             var user =(action.user)
-            return user  
+            return {...user}  
         case GET_USER_UNSUCCESS:
             return null;      
         default:
