@@ -100,3 +100,16 @@ export function createNewPlace (place) {
         return errorMessage
     });
 }  
+
+export function createNewEvent (event) {
+    var options = {
+        data: event
+    };
+
+    var config = generateAuthRequest(POST, 'api/Event/' , options, {});
+    return axios(config)
+    .then( response => response)
+    .catch((errorMessage) => {
+        return errorMessage
+    });
+}  

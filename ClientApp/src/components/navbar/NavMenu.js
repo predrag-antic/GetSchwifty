@@ -89,6 +89,11 @@ class NavMenu extends Component {
                         <NavLink tag={Link} className="text-dark" to="/create-band">Create Band</NavLink>
                       </NavItem>
                     </DropdownItem>
+                    <DropdownItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/create-event">Create Event</NavLink>
+                      </NavItem>
+                    </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem>
                       {
