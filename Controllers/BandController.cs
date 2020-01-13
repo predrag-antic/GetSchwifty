@@ -72,15 +72,11 @@ namespace GetSchwifty.Controllers
                 .Results;
 
             var avgRatingQuery = graphClient.client.Cypher
-                .Match("(b:Band)-[:HAS_REVIEW]->(r)")
-                .Where("b.name = '" + name + "'")
-                .Return<int>("avg(r.rating)")
-                .Results;
-
-            var numOfRatingQuery = graphClient.client.Cypher
-                .Match("(b:Band)-[:HAS_REVIEW]->(r)")
-                .Where("b.name = '" + name + "'")
-                .Return<int>("count(r)")
+                .OptionalMatch("(b:Band {name:'" + name + "'})-[:HAS_REVIEW]->(r:Review)<-[:LEAVE]-(u:User)")
+                .With("avg(r.rating) as bandAvgRating")
+                .Return((bandAvgRating) => new {
+                    BandAvgRating = bandAvgRating.As<Double>()
+                })
                 .Results;
 
             var bandsReviewQuery = graphClient.client.Cypher
@@ -97,43 +93,49 @@ namespace GetSchwifty.Controllers
                 return null;
             }
 
-            band.name = bandQuery.ToList()[0].Band.name;
-            band.type = bandQuery.ToList()[0].Band.type;
-            band.imageUrl = bandQuery.ToList()[0].Band.imageUrl;
-            band.phone = bandQuery.ToList()[0].Band.phone;
-            band.bandAvgRating = avgRatingQuery.ToList()[0];
-            band.numOfRatings = numOfRatingQuery.ToList()[0];
-            band.bandReviews = bandsReviewQuery.ToList()[0].BandsReviews.ToList();
+            band.name = bandQuery.ToList()[0].Band == null ? null : bandQuery.ToList()[0].Band.name;
+            band.type = bandQuery.ToList()[0].Band == null ? null : bandQuery.ToList()[0].Band.type;
+            band.imageUrl = bandQuery.ToList()[0].Band == null ? null : bandQuery.ToList()[0].Band.imageUrl;
+            band.phone = bandQuery.ToList()[0].Band == null ? null : bandQuery.ToList()[0].Band.phone;
+            band.bandAvgRating = avgRatingQuery.ToList()[0].BandAvgRating;
+            band.bandReviews = bandsReviewQuery.ToList()[0].BandsReviews == null ? null : bandsReviewQuery.ToList()[0].BandsReviews.ToList();
 
             return band;
         }
 
         // POST: api/Band
         [HttpPost]
-        public ActionResult PostBand([FromBody] Band bandInfo)
+        public Band PostBand([FromBody] Band bandInfo)
         {
             GraphClientConnection graphClient = new GraphClientConnection();
-            Band newBand = new Band();
+            Band newBand = new Band { name = bandInfo.name, type = bandInfo.type, phone = bandInfo.phone, imageUrl= bandInfo.imageUrl };
 
             if (graphClient == null)
             {
                 StatusCode(500);
+                return null;
             }
 
-            newBand.name = bandInfo.name;
-            newBand.type = bandInfo.type;
-            newBand.imageUrl = bandInfo.imageUrl;
-            newBand.phone = bandInfo.phone;
-            newBand.bandAvgRating = 0;
-            newBand.numOfRatings = 0;
-            newBand.bandReviews = null;
 
-            graphClient.client.Cypher
+            var newBandQueryResult = graphClient.client.Cypher
                 .Create("(band:Band {newBand})")
                 .WithParam("newBand", newBand)
-                .ExecuteWithoutResults();
+                .Return((band) => new
+                {
+                    Band = band.As<Band>()
+                })
+                .Results;
 
-            return StatusCode(200);
+            if (newBandQueryResult.Count() == 0)
+            {
+                StatusCode(500);
+                return null;
+            }
+
+            newBand = newBandQueryResult.ToList()[0].Band;
+            StatusCode(200);
+
+            return newBand;
 
         }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Swal from 'sweetalert2'
 import { getBand } from '../store/actions/band.actions';
 import ReviewForm from './ReviewForm';
 import {store} from '../App'
@@ -12,10 +11,6 @@ class Band extends React.Component {
     componentDidMount(){
         const name = this.props.match.params.id;
         this.props.getBand(name);
-    }
-
-    zoomPic = () => {
-        Swal.fire({imageUrl:"https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"})
     }
 
     handleAddToFavorite=(bandName)=>{
@@ -49,8 +44,8 @@ class Band extends React.Component {
                         <div className="col-md-7">
                             <div className="card">
                                 <img className="card-img-top"
-                                src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                                alt="Card image cap" onClick={()=>this.zoomPic()}></img>
+                                src={band.imageUrl}
+                                alt="Band img"></img>
                                 <div className="card-body">
                                     <h1 className="card-title text-center">{band.name}</h1>
                                     <hr/>
@@ -69,11 +64,11 @@ class Band extends React.Component {
                                     (<div className="text-center mt-2"> 
                                     {
                                         this.alreadyFavorite()?
-                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-danger">
+                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" className="btn btn-danger">
                                             Favorite
                                         </button>)
                                         :
-                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" class="btn btn-outline-danger">
+                                        (<button onClick={()=>this.handleAddToFavorite(band.name)} type="button" className="btn btn-outline-danger">
                                             Add To Favorite
                                         </button>)
                                     }
@@ -91,7 +86,7 @@ class Band extends React.Component {
                                     {
                                         reviews.map(review => {
                                             return(
-                                            <div className="card mb-2">
+                                            <div className="card mb-2" key={review.rating+review.comment}>
                                                 <div className="card-body">
                                                     <h4 className="card-title">{review.rating} - <Link to={`/user/${review.userId}`}  style={{textDecoration:"none", color:"#000000"}}>{review.userName}</Link></h4>
                                                     <p className="card-text">{review.comment}</p>

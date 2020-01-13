@@ -8,12 +8,12 @@ class Places extends React.Component {
 
   render () {
     var places = Array.from(this.props.places);
-    if(places==undefined){
+    if(places===undefined){
         return (<div>Loading...</div>)
     }
     else{
     return (
-        <div className="container py-3" >
+        <div className="container py-3 text-center" >
         <div className="row">
     {
         places.map(place => {
@@ -22,15 +22,14 @@ class Places extends React.Component {
                         <div className="card mb-2">
                           <NavLink to={`/places/${place.name}`} onClick={() => this.props.getPlace(`${place.name}`)} style={{textDecoration:"none"}}>
                           <img className="card-img-top"
-                            src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                            alt="Card image cap"></img>
+                            src={place.imageUrl}
+                            alt="Place img"></img>
                           </NavLink>
                           <div className="card-body">
                             <NavLink to={`/places/${place.name}`} onClick={() => this.props.getPlace(`${place.name}`)} style={{textDecoration:"none",color:"#000000"}}>
                               <h4 className="card-title">{place.name}</h4>
                             </NavLink>
                             <p className="card-text">{place.address}</p>
-                            <p className="card-text">{place.phone}</p>
                           </div>
                         
                         </div>

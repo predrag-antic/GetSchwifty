@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { getPlace } from '../store/actions/place.actions';
 
 class PlacesList extends React.Component{
 
     render(){
         var places = Array.from(this.props.places);
-        if(places==undefined){
+        if(places===undefined){
             return (<div>Loading...</div>)
         }
         else{
@@ -24,8 +24,8 @@ class PlacesList extends React.Component{
                                     <div className="card mb-2">
                                     <NavLink to={`/places/${place.name}`} onClick={() => this.props.getPlace(`${place.name}`)} style={{textDecoration:"none"}}>
                                       <img className="card-img-top"
-                                        src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                                        alt="Card image cap"></img>
+                                        src={place.imageUrl}
+                                        alt="Place img"></img>
                                       </NavLink>
                                       <div className="card-body">
                                       <NavLink to={`/places/${place.name}`} onClick={() => this.props.getPlace(`${place.name}`)} style={{textDecoration:"none",color:"#000000"}}>

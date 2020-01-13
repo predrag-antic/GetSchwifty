@@ -1,5 +1,4 @@
 
-import {store} from "../../App";
 import {loginUser, getUserByUserIdService} from '../../service/service.user'
 export const LOGOUT = 'LOGOUT';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

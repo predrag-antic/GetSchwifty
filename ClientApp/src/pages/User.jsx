@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {thunk_action_getUserById} from '../store/actions/user-actions'
 import {store} from '../App'
-import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux'
 import UserInfo from '../components/navbar/UserInfo'
 import Favorites from '../components/navbar/Favorites'
-import malegender from '../resources/female-gender.jpg'
-import femalegender from '../resources/male-gender.jpg'
 
 class User extends Component {    
 
@@ -55,11 +52,12 @@ class User extends Component {
           <div className="dropdown-divider"></div>
           <h3 className="my-4 text-center" style={{color:"#FE7447"}}>Band reviews</h3>
           <div className="d-flex mb-4 text-center">
+          <div className="row">
             {
               user_info.reviewBand.length!==0?
               user_info.reviewBand.map((band)=>{
                 return (
-                <div key={band.nameOfBandOrPlace} className="card mr-2" >
+                <div key={band.nameOfBandOrPlace+band.rating+band.comment} className="card mr-2 mb-2" >
                     <div className="card-body py-2 px-5">
                       <h5 className="card-title mb-2"><Link to={`/bands/${band.nameOfBandOrPlace}`} style={{textDecoration:"none", color:"#000000"}}>{band.nameOfBandOrPlace}</Link></h5>
                       <h5 className="card-text mb-2" style={{color:"#FE7447"}}>{band.rating}</h5>
@@ -71,15 +69,17 @@ class User extends Component {
               :
               <p style={{color:"#ffffff"}} className="text-center">No reviews</p>
             }
+            </div>
           </div>
           <div className="dropdown-divider"></div>
           <h3 className="my-4 text-center" style={{color:"#FE7447"}}>Place reviews</h3>
           <div className="d-flex mb-4 text-center">
+            <div className="row">
             {
               user_info.reviewPlaces.length!==0?
               user_info.reviewPlaces.map((place)=>{
                 return (
-                <div key={place.nameOfBandOrPlace} className="card mr-2" >
+                <div key={place.nameOfBandOrPlace+place.rating+place.comment} className="card mr-2 mb-2" >
                     <div className="card-body py-2 px-5">
                       <h5 className="card-title mb-2"><Link to={`/places/${place.nameOfBandOrPlace}`} style={{textDecoration:"none", color:"#000000"}}>{place.nameOfBandOrPlace}</Link></h5>
                       <h5 className="card-text mb-2" style={{color:"#FE7447"}}>{place.rating}</h5>
@@ -91,6 +91,7 @@ class User extends Component {
               :
               <p style={{color:"#ffffff"}} className="text-center">No reviews</p>
             }
+            </div>
           </div>
     </div>
     );

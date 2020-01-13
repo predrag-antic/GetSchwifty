@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { getBand } from '../store/actions/band.actions';
 
 class BandsList extends React.Component{
 
     render(){
         var bands = Array.from(this.props.bands);
-        if(bands==undefined){
+        if(bands===undefined){
             return (<div>Loading...</div>)
         }
         else{
@@ -23,8 +23,8 @@ class BandsList extends React.Component{
                                     <div className="card mb-2">
                                       <NavLink to={`/bands/${band.name}`} onClick={() => this.props.getBand(`${band.name}`)} style={{textDecoration:"none"}}>
                                       <img className="card-img-top"
-                                        src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                                        alt="Card image cap"></img>
+                                        src={band.imageUrl}
+                                        alt="Band img"></img>
                                       </NavLink>
                                       <div className="card-body">
                                         <NavLink to={`/bands/${band.name}`} onClick={() => this.props.getBand(`${band.name}`)} style={{textDecoration:"none",color:"#000000"}}>

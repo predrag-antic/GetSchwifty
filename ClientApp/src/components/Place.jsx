@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPlace } from '../store/actions/place.actions';
-import Swal from 'sweetalert2'
 import ReviewForm from './ReviewForm';
 import {store} from '../App'
 import {thunk_action_addPlaceToFavorite} from '../store/actions/user-actions'
@@ -12,10 +11,6 @@ class Place extends React.Component {
     componentDidMount(){
         const name = this.props.match.params.id;
         this.props.getPlace(name);
-    }
-
-    zoomPic = () => {
-        Swal.fire({imageUrl:"https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"})
     }
 
     handleAddToFavorite=(placeName)=>{
@@ -41,6 +36,7 @@ class Place extends React.Component {
     render(){
         const {place} = this.props;
         const reviews = Array.from(this.props.place.placeReviews);
+        const events = Array.from(this.props.place.placeBands);
         return(
             <div className="container">
                 {
@@ -49,8 +45,8 @@ class Place extends React.Component {
                         <div className="col-md-7">
                             <div className="card">
                                 <img className="card-img-top"
-                                src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                                alt="Card image cap" onClick={()=>this.zoomPic()}></img>
+                                src={place.imageUrl}
+                                alt="Place img"></img>
                                 <div className="card-body">
                                     <h1 className="card-title text-center">{place.name}</h1>
                                     <hr/>
@@ -69,11 +65,11 @@ class Place extends React.Component {
                                         (<div className="text-center mt-2"> 
                                         {
                                             this.alreadyFavorite()?
-                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-danger">
+                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" className="btn btn-danger">
                                                 Favorite
                                             </button>)
                                             :
-                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" class="btn btn-outline-danger">
+                                            (<button onClick={()=>this.handleAddToFavorite(place.name)} type="button" className="btn btn-outline-danger">
                                                 Add To Favorite
                                             </button>)
                                         }
@@ -87,11 +83,31 @@ class Place extends React.Component {
 
 
                         <div className="col-md-5">
+                            <div>
+                                <h3 className="text-center" style={{color:"#ffffff"}}>Events</h3>
+                                    <div className="card mb-2">
+                                        <div className="card-body">
+                                {   events[0]!==null?
+                                    events.map(event => {
+                                        return(
+                                            <div key={event.bandName+event.day+event.time}>
+                                                    <p className="card-text"><strong>{event.day} - {event.time}h</strong> - <Link to={`/bands/${event.bandName}`}  style={{textDecoration:"none", color:"#000000"}}>{event.bandName}</Link> - {event.type}</p>
+                                                    <hr/>
+                                            </div>
+                                        )
+                                    })
+                                    :
+                                    'No events'
+                                }
+                                    </div>
+                                </div>
+                            </div>
+
                             <h3 className="text-center" style={{color:"#ffffff"}}>Reviews</h3>
                                     {
                                         reviews.map(review => {
                                             return(
-                                            <div className="card mb-2">
+                                            <div className="card mb-2" key={review.rating+review.comment}>
                                                 <div className="card-body">
                                                     <h4 className="card-title">{review.rating} - <Link to={`/user/${review.userId}`}  style={{textDecoration:"none", color:"#000000"}}>{review.userName}</Link></h4>
                                                     <p className="card-text">{review.comment}</p>

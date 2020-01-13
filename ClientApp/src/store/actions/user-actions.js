@@ -1,4 +1,3 @@
-import {store} from "../../App";
 import {getUserByUserIdService, 
     followUserService,
     addFavoritePlaceService,

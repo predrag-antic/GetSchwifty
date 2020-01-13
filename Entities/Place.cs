@@ -15,6 +15,7 @@ namespace GetSchwifty.Entities
         public double averageRate { get; set;}
         public List<TimeAndBand> placeBands { get; set; }
         public List<UserReview> placeReviews { get; set; }
+        public List<Event> listOfEvents { get; set; }
 
     }
 }

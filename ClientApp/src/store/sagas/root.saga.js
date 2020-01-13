@@ -14,7 +14,7 @@ export function* rootSaga () {
             takeEvery(GET_PLACE, fetchPlace),
             takeEvery(GET_BAND, fetchBand),
             takeEvery(ADD_REVIEW_BAND, postBandReview),
-            takeEvery(ADD_REVIEW_PLACE, postPlaceReview)
+            takeEvery(ADD_REVIEW_PLACE, postPlaceReview)        
         ]
     )
 }
