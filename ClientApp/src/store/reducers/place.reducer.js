@@ -9,7 +9,8 @@ const initialState = {
         imageUrl  : '',
         averageRate : '',
         placeBands : [],
-        placeReviews : []
+        placeReviews : [],
+        listOfEvents: []
 }
 
 export function placeReducer( state = initialState, action ){

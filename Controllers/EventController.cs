@@ -154,26 +154,36 @@ namespace GetSchwifty.Controllers
 
         // POST: api/Event/userGoingTo
         [HttpPost("userGoingTo",Name = "UserGoingTo")]
-        public StatusCodeResult UserGoingTo([FromBody]UserEvent _newUserEvent)
+        public EventIdName UserGoingTo([FromBody]UserEvent _newUserEvent)
         {
             GraphClientConnection graphClient = new GraphClientConnection();
             if (graphClient == null)
             {
-                return StatusCode(500);
+                StatusCode(500);
+                return null;
             }
 
-            var eventId = graphClient.client.Cypher
+            EventIdName eventInfo = new EventIdName();
+
+            var eventIdAndName = graphClient.client.Cypher
                 .Match("(event:Event{id:" + _newUserEvent.eventId + "})")
-                .With("event.id as eventId")
-                .Return((eventId) => new
+                .With("event.id as eventId, event.name as eventName")
+                .Return((eventId,eventName) => new
                 {
-                    EventId = eventId.As<int>()
+                    EventId = eventId.As<int>(),
+                    EventName = eventName.As<string>()
                 })
                 .Results;
-            if(eventId.Count() == 0)
+
+
+            if(eventIdAndName.Count() == 0)
             {
-                return StatusCode(500);
+                StatusCode(500);
+                return null;
             }
+
+            eventInfo.eventId = eventIdAndName.ToList()[0].EventId;
+            eventInfo.eventName = eventIdAndName.ToList()[0].EventName;
 
             var userId = graphClient.client.Cypher
                 .Match("(user:User{id:'" + _newUserEvent.userId + "'})")
@@ -183,16 +193,20 @@ namespace GetSchwifty.Controllers
                     UserId = userId.As<string>()
                 })
                 .Results;
+
             if(userId.Count() == 0)
             {
-                return StatusCode(500);
+                StatusCode(500);
+                return null;
             }
 
             graphClient.client.Cypher
                 .Match("(event:Event{id:" + _newUserEvent.eventId + "}), (user:User{id:'" + _newUserEvent.userId + "'})")
                 .Create("(user)-[:GOING_TO]->(event)")
                 .ExecuteWithoutResults();
-            return StatusCode(204);
+                
+            StatusCode(200);
+            return eventInfo;
         }
 
         // DELETE: api/ApiWithActions/5

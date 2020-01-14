@@ -36,7 +36,10 @@ class Place extends React.Component {
     render(){
         const {place} = this.props;
         const reviews = Array.from(this.props.place.placeReviews);
-        const events = Array.from(this.props.place.placeBands);
+        const parties = Array.from(this.props.place.placeBands);
+        const events = Array.from(this.props.place.listOfEvents);
+        var moment = require('moment');
+
         return(
             <div className="container">
                 {
@@ -81,7 +84,6 @@ class Place extends React.Component {
                             </div>
                         </div>
 
-
                         <div className="col-md-5">
                             <div>
                                 <h3 className="text-center" style={{color:"#ffffff"}}>Events</h3>
@@ -89,15 +91,37 @@ class Place extends React.Component {
                                         <div className="card-body">
                                 {   events[0]!==null?
                                     events.map(event => {
+                                        var parseDate = Date.parse(event.time);
+                                        var datetime = moment(parseDate).format("lll");
                                         return(
-                                            <div key={event.bandName+event.day+event.time}>
-                                                    <p className="card-text"><strong>{event.day} - {event.time}h</strong> - <Link to={`/bands/${event.bandName}`}  style={{textDecoration:"none", color:"#000000"}}>{event.bandName}</Link> - {event.type}</p>
+                                            <div key={event.id}>
+                                                    <p className="card-text"><strong><Link to={`/events/${event.id}`}  style={{textDecoration:"none", color:"#000000"}}>{event.name}</Link> - {datetime}</strong> </p>
                                                     <hr/>
                                             </div>
                                         )
                                     })
                                     :
                                     'No events'
+                                }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 className="text-center" style={{color:"#ffffff"}}>Parties</h3>
+                                    <div className="card mb-2">
+                                        <div className="card-body">
+                                {   parties[0]!==null?
+                                    parties.map(party => {
+                                        return(
+                                            <div key={party.bandName+party.day+party.time}>
+                                                    <p className="card-text"><strong>{party.day} - {party.time}h</strong> - <Link to={`/bands/${party.bandName}`}  style={{textDecoration:"none", color:"#000000"}}>{party.bandName}</Link> - {party.type}</p>
+                                                    <hr/>
+                                            </div>
+                                        )
+                                    })
+                                    :
+                                    'No Parties'
                                 }
                                     </div>
                                 </div>
