@@ -95,7 +95,7 @@ class Place extends React.Component {
                                         var datetime = moment(parseDate).format("lll");
                                         return(
                                             <div key={event.id}>
-                                                    <p className="card-text"><strong><Link to={`/events/${event.id}`}  style={{textDecoration:"none", color:"#000000"}}>{event.name}</Link> - {datetime}</strong> </p>
+                                                    <p className="card-text"><strong><Link to={`/event/${event.id}`}  style={{textDecoration:"none", color:"#000000"}}>{event.name}</Link></strong>  - {datetime}</p>
                                                     <hr/>
                                             </div>
                                         )

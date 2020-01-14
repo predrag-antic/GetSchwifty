@@ -99,7 +99,7 @@ class NavMenu extends Component {
                       {
                       this.props.current_user.isOwner?
                       <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/play">Add event</NavLink>
+                        <NavLink tag={Link} className="text-dark" to="/play">Add party</NavLink>
                       </NavItem>
                       :
                       null

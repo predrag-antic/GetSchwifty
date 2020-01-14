@@ -14,8 +14,8 @@ class Home extends React.Component {
         <div className="container">
           <div className="row" style={{height:'600px', alignItems:'center', color:"#FFFFFF"}}>
             <div className="col-5" >
-              <h1 style={{color:'#FE7447'}}>Hello!</h1>
-              <p>Welcome to GetSchwifty, web application, where you can find about parties, places, etc in your town!</p>
+              <h2 style={{color:'#FE7447'}} className="mb-4">Welcome to GetSchwifty!</h2>
+              <p>Web application, where you can find about parties, places and events in your town!</p>
               <p>Find your friends and see where they go, so you can be with them.</p>
             </div>
             <div className="col-6 ml-auto">

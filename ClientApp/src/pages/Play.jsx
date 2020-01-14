@@ -89,8 +89,8 @@ class Play extends Component {
         <div className="container form-width pt-5" style={{color:"#ffffff"}}>
             <form className="mb-3">
                 <div className="form row mt-3">
-                    <label>Select place:</label>
-                    <select name="placeName" className="form-control" onChange={this.onChange}>
+                    <label className="mx-3">Select place:</label>
+                    <select name="placeName" className="form-control mx-3" onChange={this.onChange}>
                         <option value="" key="test">{"..."}</option>
                         {
                             this.props.current_user.myPlaces.map((place)=>{
@@ -123,8 +123,8 @@ class Play extends Component {
                     </div>
                 </div>
                 <div className="form row mt-3">
-                    <label>Day when band will play:</label>
-                    <select name="day" className="form-control" onChange={this.onChange}>
+                    <label className="mx-3">Day when band will play:</label>
+                    <select name="day" className="form-control mx-3" onChange={this.onChange}>
                         {
                             days.map((day)=>{
                                 return (
@@ -153,7 +153,7 @@ class Play extends Component {
                     </div>
                 </div>
             </form>
-            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add event</button>
+            <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Add party</button>
         </div>
     );
   }
