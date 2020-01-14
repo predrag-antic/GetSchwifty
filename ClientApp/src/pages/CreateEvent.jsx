@@ -20,7 +20,9 @@ class CreateEvent extends Component {
             placeName:"",
             sponsorName:"",
             sponsorDesc:"",
-            listOfSponsors:[]
+            listOfSponsors:[],
+            error:false,
+            sponsorError:false
          }
     }
 
@@ -28,56 +30,39 @@ class CreateEvent extends Component {
         this.setState({[event.target.name]:event.target.value})
      }
 
-   /* checkInput=()=>{
-        const {name,imageUrl,phone,address} = this.state;
-        var noError=true;
-        var places = Array.from(this.props.places);
-        
-        places = places.map(place => {
-           return place.name
-        })
+   checkInput=()=>{
+        const {name,imageUrl,topic,description,time,placeName,listOfSponsors} = this.state;
+        if(name.length===0 || 
+            imageUrl.length===0 || 
+            topic.length===0 || 
+            description.length===0 || 
+            time===null|| 
+            placeName.length===0|| 
+            listOfSponsors.length===0)
+            {
+                this.setState({"error":true})
+                return false;
+            }
+            return true;
+    }
 
-        if(name.length<=2){
-            this.setState({"nameError":true})
-            noError=false;
-        }else {
-            this.setState({"nameError":false})
-        }
-
-        if(places.includes(name)){
-            this.setState({"uniqueNameError":true})
-            noError=false;
-        }else {
-            this.setState({"uniqueNameError":false})
-        }
-
-        if(imageUrl.length===0){
-            this.setState({"imageUrlError":true})
-            noError=false;
-        }else {
-            this.setState({"imageUrlError":false})
-        }
-
-        if(address.length===0){
-            this.setState({"addressError":true})
-            noError=false;
-        }else {
-            this.setState({"addressError":false})
-        }
-
-        if(phone.length<=7){
-            this.setState({"phoneError":true})
-            noError=false;
-        }else {
-            this.setState({"phoneError":false})
-        }
-
-        return noError;
-    }*/
+    clearFields=()=>{
+        this.setState({"name":""});    
+        this.setState({"topic":""});    
+        this.setState({"description":""});    
+        this.setState({"time":""});    
+        this.setState({"imageUrl":""});    
+        this.setState({"sponsorName":""});    
+        this.setState({"sponsorDesc":""});    
+        this.setState({"placeName":""});    
+        this.setState({"listOfSponsors":[]});  
+        this.setState({"error":false});    
+        this.setState({"sponsorError":false})
+    }
 
     handleSubmit=()=>{
         const {name,topic,description,imageUrl,time,placeName,listOfSponsors} = this.state;
-        //if(this.checkInput()){
+        if(this.checkInput()){
 
             const event = {
                 name:name,
@@ -92,16 +77,26 @@ class CreateEvent extends Component {
                 if(response.status===200){
                     const eventName=response.data.name;
                     Swal.fire('Success',`You just created ${eventName}`,'success')
+                    this.clearFields();
                 }else {
                     Swal.fire('Error','Somethnig went wrong! Try again!','error')
                 }
             })
+        }
     }
 
     onChangeTime = time => this.setState({ time })
-
+    checkSponsor= ()=>{
+        const {sponsorDesc,sponsorName}=this.state;
+        if(sponsorDesc.length===0 || sponsorName.length===0){
+            this.setState({"sponsorError":true})
+            return false
+        }
+        return true
+    }
     addSponsor=()=>{
         const {sponsorDesc,sponsorName}=this.state;
+        if(this.checkSponsor()){
         var listOfSponsors=this.state.listOfSponsors;
         if(sponsorDesc.length!==0 && sponsorName.length!==0){
             const sponsor={
@@ -112,7 +107,9 @@ class CreateEvent extends Component {
             this.setState({"listOfSponsors":listOfSponsors})
             this.setState({"sponsorDesc":""})
             this.setState({"sponsorName":""})
+            this.setState({"sponsorError":false})
         }
+    }
     }
 
   render () {
@@ -163,8 +160,8 @@ class CreateEvent extends Component {
                     </div>
                 </div>
                 <div className="form row mt-3">
-                    <label>Select place :</label>
-                    <select name="placeName" className="form-control" onChange={this.onChange}>
+                    <label className=" mx-3">Select place :</label>
+                    <select name="placeName" className="form-control mx-3" onChange={this.onChange}>
                         <option value="" key="test">{"..."}</option>
                         {
                             this.props.current_user.myPlaces.map((place)=>{
@@ -184,12 +181,28 @@ class CreateEvent extends Component {
                             <small>Description:</small>
                             <input onChange={this.onChange} type="text" name="sponsorDesc" className="form-control" placeholder="Please add sponsor description" value={sponsorDesc} required/>
                         </div>
+                        {
+                            this.state.sponsorError===true?
+                            <div className="alert alert-danger mt-3" role="alert">
+                                Please fill name and description!
+                            </div>
+                            :
+                            null
+                        }
                     </div>
                 </div>
             </form>
             <button className="btn btn-primary mt-3" onClick={this.addSponsor}>+</button>
             <p>add sponsor</p>
             <button className="btn btn-primary mt-3" onClick={this.handleSubmit}>Submit event</button>
+            {
+                this.state.error===true?
+                <div className="alert alert-danger mt-3" role="alert">
+                    Please fill all fields!
+                </div>
+                :
+                null
+            }
         </div>
     );
   }
