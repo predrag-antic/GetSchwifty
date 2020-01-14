@@ -10,8 +10,14 @@ import CreatePlace from "./pages/CreatePlace";
 import Play from "./pages/Play";
 import CreateBand from "./pages/CreateBand";
 import CreateEvent from "./pages/CreateEvent";
+import EventPage from "./pages/EventPage";
 
 var routes = [
+    {
+        path:"/event/:eventId",
+        name:"EventPage",
+        component: EventPage
+    },
     {
     path:"/create-event",
     name:"CreateEvent",

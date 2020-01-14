@@ -58,9 +58,9 @@ export function userReducer(state=initialState,action){
                 state.favoriteBands=state.favoriteBands.filter(favBand=>favBand.name!==bandName);
                 return {...state}
         case ADD_MY_PLACE:
-            var placeName=action.placeName;
+            var placeNamee=action.placeName;
             return Object.assign({}, state, {
-                myPlaces: [...state.myPlaces,placeName]
+                myPlaces: [...state.myPlaces,placeNamee]
                 })
         default:
             return state;
