@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {store} from '../App'
 import {thunk_action_getEventById} from '../store/actions/event-action'
+import {thunk_action_addUserGoingToEvent} from '../store/actions/user-actions'
 import { Link } from 'react-router-dom';
 
 class EventPage extends React.Component {
@@ -11,25 +12,26 @@ class EventPage extends React.Component {
       store.dispatch(thunk_action_getEventById(eventId));
       } 
 
-    handleAddToFavorite=(eventId)=>{
-        // const userIdEventId ={
-        //   userId:localStorage.getItem("id"),
-        //   eventId:eventId
-        // }
-        // store.dispatch(thunk_action_addUserGoingToEvent(userIdEventId));
+    handleGoingToEvent=(eventId)=>{
+        console.log(eventId);
+        const userIdEventId ={
+          userId:localStorage.getItem("id"),
+          eventId:eventId
+        }
+        store.dispatch(thunk_action_addUserGoingToEvent(userIdEventId));
       }
 
-    // alreadyFavorite=()=>{
-    //     var isFavorite=false;
-    //     if(this.props.current_user.favoriteBands){
-    //       this.props.current_user.favoriteBands.map((band)=>{
-    //         if(band.name===this.props.band.name){
-    //             isFavorite= true;
-    //         }
-    //       })
-    //     }
-    //     return isFavorite;
-    //   }
+    alreadyGoing=()=>{
+        var going=false;
+        if(this.props.current_user.userEvents){
+          this.props.current_user.userEvents.map((event)=>{
+            if(event.eventId===this.props.event.id){
+                going= true;
+            }
+          })
+        }
+        return going;
+      }
 
     render(){
         const {event} = this.props;
@@ -98,14 +100,16 @@ class EventPage extends React.Component {
                                     localStorage.getItem("id")?
                                     (<div className="text-center mt-2"> 
                                     {
-                                        // this.alreadyFavorite()?
-                                        (<button  type="button" className="btn btn-primary">
+                                        this.alreadyGoing()?
+                                        (<button  type="button" className="btn btn-primary" 
+                                        onClick={()=>this.handleGoingToEvent(event.id)}>
                                             GOING
                                         </button>)
-                                        // :
-                                        // (<button  type="button" className="btn btn-outline-primary">
-                                        //     GO ON EVENT?
-                                        // </button>)
+                                        :
+                                        (<button  type="button" className="btn btn-outline-primary"
+                                        onClick={()=>this.handleGoingToEvent(event.id)}>
+                                            GO ON EVENT?
+                                        </button>)
                                     }
                                     </div>
                                     )

@@ -89,6 +89,14 @@ namespace GetSchwifty.Controllers
                 })
                 .Results;
 
+            var goingToEventsUsersQuery = graphClient.client.Cypher
+                .OptionalMatch("(:User{ id:'" + userId + "'})-[:GOING_TO]->(ev:Event)")
+                .With("ev {eventId:ev.id,eventName:ev.name}")
+                .Return((ev) => new {
+                    EventIdEventName = ev.CollectAs<EventIdName>()
+                })
+                .Results;
+
             user.id = userQuery.ToList()[0].User.id;
             user.name = userQuery.ToList()[0].User.name;
             user.age = userQuery.ToList()[0].User.age;
@@ -100,6 +108,7 @@ namespace GetSchwifty.Controllers
             user.reviewBand = bandsReviewQuery.ToList()[0].BandsReviews.ToList();
             user.reviewPlaces = placesReviewQuery.ToList()[0].PlacesReviews.ToList();
             user.followedUsers = followedUsersQuery.ToList()[0].FollowedUsers.ToList();
+            user.userEvents = goingToEventsUsersQuery.ToList()[0].EventIdEventName.ToList();
             StatusCode(200);
             return user;
         }

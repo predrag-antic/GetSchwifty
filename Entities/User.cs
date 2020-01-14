@@ -19,5 +19,6 @@ namespace GetSchwifty.Entities
         public List<Review> reviewPlaces { get; set; }
         public List<Review> reviewBand { get; set; }
         public List<FollowedUser> followedUsers { get; set; }
+        public List<EventIdName> userEvents { get; set; }
     }
 }

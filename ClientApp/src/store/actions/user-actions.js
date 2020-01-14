@@ -150,7 +150,7 @@ export function giveUpOfEvent(eventId){
     }
 }
 
-export const thunk_action_goingToEvent = userIdEventId => {
+export const thunk_action_addUserGoingToEvent = userIdEventId => {
     return function(dispatch, getState) {
       return userGoingToEventService(userIdEventId).then(response=>{
           if(response.status===200){

@@ -16,7 +16,7 @@ const initialState={
     reviewPlaces: [],
     reviewBand: [],
     followedUsers: [],
-    goingToEvent:[]
+    userEvents:[]
 }
 
 export function userReducer(state=initialState,action){
@@ -66,11 +66,11 @@ export function userReducer(state=initialState,action){
         case GOING_TO_EVENT:
             var event=action.event;
             return Object.assign({}, state, {
-                goingToEvent: [...state.goingToEvent,event]
+                userEvents: [...state.userEvents,event]
                 })
         case GIVE_UP_OF_EVENT:
             var eventId=action.eventId;
-                state.goingToEvent=state.goingToEvent.filter(event=>event.eventId!==eventId);
+                state.userEvents=state.userEvents.filter(event=>event.eventId!==eventId);
                 return {...state}
         default:
             return state;
