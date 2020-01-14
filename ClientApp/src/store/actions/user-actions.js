@@ -1,8 +1,10 @@
 import {getUserByUserIdService, 
     followUserService,
     addFavoritePlaceService,
-    addFavoriteBandService
+    addFavoriteBandService,
+    userGoingToEventService
 } from '../../service/service.user'
+
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_UNSUCCESS = 'GET_USER_UNSUCCESS';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
@@ -12,6 +14,8 @@ export const REMOVE_FAVORITE_PLACE = "REMOVE_FAVORITE_PLACE";
 export const ADD_FAVORITE_BAND_SUCCESS = "ADD_FAVORITE_BAND_SUCCESS";
 export const REMOVE_FAVORITE_BAND = "REMOVE_FAVORITE_BAND";
 export const ADD_MY_PLACE = "ADD_MY_PLACE";
+export const GOING_TO_EVENT = "GOING_TO_EVENT";
+export const GIVE_UP_OF_EVENT = "GIVE_UP_OF_EVENT";
 
 export function getUserByUserId (user) {
     return {
@@ -129,3 +133,31 @@ export const thunk_action_addBandToFavorite = userIdBandName => {
         placeName
     }
 }
+
+//////////////////////E V E N T//////////////////////
+
+export function goingToEvent(event){
+    return {
+        type: GOING_TO_EVENT,
+        event
+    }
+}
+
+export function giveUpOfEvent(eventId){
+    return {
+        type: GIVE_UP_OF_EVENT,
+        eventId
+    }
+}
+
+export const thunk_action_goingToEvent = userIdEventId => {
+    return function(dispatch, getState) {
+      return userGoingToEventService(userIdEventId).then(response=>{
+          if(response.status===200){
+              dispatch(goingToEvent(response.data))
+          }else {
+              dispatch(giveUpOfEvent(userIdEventId.eventId))
+          }
+      })
+    }
+  }

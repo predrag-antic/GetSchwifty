@@ -1,6 +1,6 @@
 import { LOGIN_SUCCESS, LOGIN_UNSUCCESS, LOGOUT, GET_USER_SUCCESS_AUTH } from '../actions/auth-actions';
 import { FOLLOW_USER_SUCCESS, UNFOLLOW_USER,ADD_FAVORITE_PLACE_SUCCESS,REMOVE_FAVORITE_PLACE,
-    ADD_FAVORITE_BAND_SUCCESS,REMOVE_FAVORITE_BAND,ADD_MY_PLACE} from '../actions/user-actions';
+    ADD_FAVORITE_BAND_SUCCESS,REMOVE_FAVORITE_BAND,ADD_MY_PLACE,GOING_TO_EVENT,GIVE_UP_OF_EVENT} from '../actions/user-actions';
 
 
 const initialState={
@@ -15,7 +15,8 @@ const initialState={
     favoritePlaces: [],
     reviewPlaces: [],
     reviewBand: [],
-    followedUsers: []
+    followedUsers: [],
+    goingToEvent:[]
 }
 
 export function userReducer(state=initialState,action){
@@ -62,6 +63,15 @@ export function userReducer(state=initialState,action){
             return Object.assign({}, state, {
                 myPlaces: [...state.myPlaces,placeNamee]
                 })
+        case GOING_TO_EVENT:
+            var event=action.event;
+            return Object.assign({}, state, {
+                goingToEvent: [...state.goingToEvent,event]
+                })
+        case GIVE_UP_OF_EVENT:
+            var eventId=action.eventId;
+                state.goingToEvent=state.goingToEvent.filter(event=>event.eventId!==eventId);
+                return {...state}
         default:
             return state;
     }
