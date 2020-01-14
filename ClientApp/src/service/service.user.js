@@ -113,3 +113,16 @@ export function createNewEvent (event) {
         return errorMessage
     });
 }  
+
+export function userGoingToEventService(userIdEventId) {
+    var options = {
+        data: userIdEventId
+    };
+
+    var config = generateAuthRequest(POST, `api/Event/userGoingTo` , options, {});
+    return axios(config)
+    .then( response => response)
+    .catch((errorMessage) => {
+        return errorMessage
+    });
+}

@@ -165,6 +165,29 @@ namespace GetSchwifty.Controllers
 
             EventIdName eventInfo = new EventIdName();
 
+            //////////
+            ///
+            string matchQuery = "(user:User{id:'" + _newUserEvent.userId + "'})-[going_to:GOING_TO]->(event:Event{id:" + _newUserEvent.eventId + "})";
+            var userAlreadyGoingToEvent = graphClient.client.Cypher
+                .Match(matchQuery)
+                .Return((user) => new {
+                    UserGingToEvent = user.As<User>()
+                })
+                .Results;
+
+            if (userAlreadyGoingToEvent.Count() == 1) // relation between nodes exist already, so, you need to delete that relation
+            {
+                graphClient.client.Cypher
+                    .Match(matchQuery)
+                    .Delete("going_to")
+                    .ExecuteWithoutResults();
+                //204 
+                return null;
+            }
+
+            ///////////
+
+
             var eventIdAndName = graphClient.client.Cypher
                 .Match("(event:Event{id:" + _newUserEvent.eventId + "})")
                 .With("event.id as eventId, event.name as eventName")
