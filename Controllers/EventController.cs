@@ -97,7 +97,7 @@ namespace GetSchwifty.Controllers
             var newEventQuery = graphClient.client.Cypher
                 .Match("(place:Place{name:'" + _newEvent.placeName + "'})")
                 .Create("(place)<-[:HAPPENS]-(newEvent:Event{name:'" + _newEvent.name + "', topic:'" + _newEvent.topic + "', time:'"
-                + _newEvent.time + "', description:'" + _newEvent.description + "', iamgeUrl:'" + _newEvent.imageUrl + "'})")
+                + _newEvent.time + "', description:'" + _newEvent.description + "', imageUrl:'" + _newEvent.imageUrl + "'})")
                 .Set("newEvent.id = id(newEvent)")
                 .Return((newEvent) => new
                 {

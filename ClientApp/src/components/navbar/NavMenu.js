@@ -90,9 +90,14 @@ class NavMenu extends Component {
                       </NavItem>
                     </DropdownItem>
                     <DropdownItem>
-                      <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/create-event">Create Event</NavLink>
-                      </NavItem>
+                      {
+                        this.props.current_user.isOwner?
+                        <NavItem>
+                          <NavLink tag={Link} className="text-dark" to="/create-event">Create Event</NavLink>
+                        </NavItem>
+                        :
+                        null
+                      }
                     </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem>
